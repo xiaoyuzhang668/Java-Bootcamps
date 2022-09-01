@@ -1,0 +1,2 @@
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
+8,Jenna,TX,4.45,Wood,300.00,5.15,4.75,1545.00,1425.00,132.17,3102.17
