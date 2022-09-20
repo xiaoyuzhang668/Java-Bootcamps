@@ -1,0 +1,2 @@
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
+88,Nancy Chen,IN,1.01,Iron,100.02,3.01,2.01,301.06,201.04,5.07,507.17

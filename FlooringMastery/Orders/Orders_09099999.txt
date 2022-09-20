@@ -1,0 +1,2 @@
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
+6,TEST,OR,2.00,Iron,100.00,3.01,2.01,301.00,201.00,10.04,512.04

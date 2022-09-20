@@ -1,0 +1,2 @@
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
+5,all all 08,IN,1.00,Steel,100.00,4.00,3.00,400.00,300.00,7.00,707.00

@@ -1,0 +1,2 @@
+1::Glitter Potion::2.75::5
+2::Elf Bracelet::9.75::8

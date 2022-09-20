@@ -1,0 +1,10 @@
+1::Glitter Potion::2.75::6
+2::Sandwich::5.50::0
+3::Elf Bracelet::9.75::1
+4::Rainbow Unicorn::5.75::3
+5::Crystal Ball::45.75::3
+6::Golden Sword::34.75::3
+7::Health Potion::3.75::7
+8::Magic Wand::24.99::3
+9::Coke Zero::1.75::0
+10::Fairy Dust::2.75::2
