@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ca.lichangzhang.guessnumber.data.GuessNumberDaoDBTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.786 s - in ca.lichangzhang.guessnumber.data.GuessNumberDaoDBTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.017 s - in ca.lichangzhang.guessnumber.data.GuessNumberDaoDBTest
