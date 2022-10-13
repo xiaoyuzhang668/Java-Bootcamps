@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vending Machine Using REST</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+    <h1 class="text-center mt-5">Vending Machine</h1>
+    <hr class="my-4">
+    <ul class="list-group" id="errorMessages">
+    </ul>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row" id="itemRows">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <form role="form" id="addMondy">
+                    <label for="deposit" class="my-3 h4">Total $ In</label><br>
+                    <input type="text" id="deposit" value="0.00" class="text-center" readonly disabled>
+                    <div class="my-3">
+                        <button type="button" id="addDollar" class="btn btn-sm btn-outline-primary" onclick="addDollarButton()">
+                            Add Dollar
+                        </button>
+                        <button type="button" id="addQuarter" class="mt-md-3 mt-lg-0 btn btn-sm btn-outline-primary" onclick="addQuarterButton()">
+                            Add Quarter
+                        </button>
+                    </div>
+                    <div class="my-3">
+                        <button type="button" id="addDime" class="btn btn-sm btn-outline-primary" onclick="addDimeButton()">
+                            Add Dime
+                        </button>
+                        <button type="button" id="addNickel" class="mt-md-3 mt-lg-0 btn btn-sm btn-outline-primary" onclick="addNickelButton()">
+                            Add Nickel
+                        </button>
+                    </div>
+                </form>
+                <hr class="my-5">
+                <form role="form" id="purchaseItem">
+                    <h4 class="my-3">Message</h4>
+                    <input type="text" id="message" value="" aria-label="Readonly" class="form-control" readonly disabled>
+                    <div class="text-center row my-3">
+                        <label for="addItem" class="col-auto col-form-label">
+                            Item:
+                        </label>
+                        <div class="col-auto">
+                            <input type="text" id="addItem" placeholder="" class="text-center" readonly disabled required>
+                        </div>
+                    </div>
+                    <button type="button" id="makePurchase" class="btn btn-outline-primary" onclick="makePurchaseButton()">
+                        Make Purchase
+                    </button>
+                </form>
+                <hr class="my-5">
+
+                <form role="form" id="changeReturn">
+                    <label for="change" class="my-3 h4">Change</label>
+                    <input id="change" type="text" value="" aria-label="Readonly" class="form-control" readonly disabled>
+                    <button type="button" id="returnChange" class="my-3 btn btn-outline-success" onclick="returnChangeButton()">
+                        Change Return
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+    <!-- custom js files -->
+    <script src="js/home.js"></script>
+</body>
+
+</html>
