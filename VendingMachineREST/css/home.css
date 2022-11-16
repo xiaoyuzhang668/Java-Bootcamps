@@ -1,0 +1,8 @@
+.card:hover,
+button:hover {
+    cursor: pointer;
+}
+
+#change {
+    font-size: 14px;
+}
