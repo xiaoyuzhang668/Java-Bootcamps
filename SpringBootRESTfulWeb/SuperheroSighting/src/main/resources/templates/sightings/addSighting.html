@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="#">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.datetimepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.theme.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <title>Superhero</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="my-5 text-center border border-3 border-dark p-2 rounded">
+            <h1><a href="/">Superhero Sightings Spring Boot Web App</a></h1>
+        </div>
+
+        <div class="border border-3 border-dark p-4 rounded btn-toolbar d-flex flex-column flex-md-row justify-content-around d-grid gap-2 mx-auto">
+            <a href="/heros" class="btn btn-outline-primary btn-lg shadow">Hero</a>
+
+            <a href="/powers" class="btn btn-outline-primary btn-lg shadow">Power</a>
+
+            <a href="/organizations" class="btn btn-outline-primary btn-lg shadow">Organization</a>
+
+            <a href="/locations" class="btn btn-outline-primary btn-lg shadow">Location</a>
+
+            <a href="/sightings" class="btn btn-outline-primary btn-lg shadow">Sighting</a>
+        </div>
+        <div class="row border border-3 border-dark rounded my-5 mx-1">
+            <div class="col-md-3 text-center p-3 bg-light border-bottom">
+                <span class="h3">Add Sighting</span>
+            </div>
+            <div class="col-md-9 text-center p-3">
+                <form action="addSighting" method="POST">
+                    <div class="form-group row my-3">
+                        <label for="heroSighting" class="col-3 col-form-label text-end">
+                            Hero Name <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <select id="heroSighting" name="heroId" class="form-select">
+                                <option value="0" selected>
+                                    ---- Please select a hero name ----</option>
+                                <option th:each="hero : ${heros}" th:value="${hero.heroId}" th:text="${hero.name}">
+                                    Hero Name</option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('sighting.hero')}">
+                               <p th:each="error : ${#fields.errors('sighting.hero')}">
+                                    <p class="alert alert-danger" th:text="${error}">
+                                        Bad hero</p>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="form-group row my-3">
+                        <label for="locationSighting" class="col-3 col-form-label text-end">
+                            Location Name <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <select id="locationSighting" name="locationId" class="form-select">
+                                <option value="0" selected>
+                                    ---- Please select a location name ----</option>
+                                <option th:each="location : ${locations}" th:value="${location.locationId}" th:text="${location.name}">
+                                    Location Name</option>
+                            </select>
+                          <div th:if="${#fields.hasErrors('sighting.location')}">
+                               <p th:each="error : ${#fields.errors('sighting.location')}">
+                            <p class="alert alert-danger" th:text="${error}">
+                                Bad location</p>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="form-group row my-3">
+                        <label for="descriptionSighting" class="col-3 col-form-label text-end">
+                            Description <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <input type="text" name="description" id="descriptionSighting" class="form-control" th:value="${sighting.description}" placeholder="Description" />
+                            <div th:if="${#fields.hasErrors('sighting.description')}">
+                                    <p th:each="error : ${#fields.errors('sighting.description')}"
+                                        class="alert alert-danger" th:text="${error}">
+                                            Bad description</p>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group row my-3">
+                        <label for="sightingDate" class="col-3 col-form-label text-end">
+                            Sighting Date <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <div class="input-group">
+                                <label for="toggle" class="input-group-text">
+                                    <img src="/images/calendar.png" alt="calendar" class="calendar">
+                                </label>
+                                <input type="text"  name="sightingDate" id="toggle" class="form-control datepicker" ReadOnly="ReadOnly" th:value="${sighting.sightingDate}" placeholder="--- Please Select Sighting Date ---" max=" " title="Please enter a date less than or equal to today's date." required />                                  
+                            </div>
+                              <div th:if="${#fields.hasErrors('sighting.sightingDate')}">
+                                    <p th:each="error : ${#fields.errors('sighting.sightingDate')}"
+                                        class="alert alert-danger" th:text="${error}">
+                                            Bad sightingDate</p>
+                                </div>
+                        </div>
+                    </div>
+    
+                    <div class="btn-toolbar d-flex flex-column flex-md-row justify-content-around d-grid gap-2 mx-auto py-4">
+                        <button type="submit" class="shadow btn btn-outline-success">Add Sighting</button>
+                        <button type="button" onclick="cancelAddSighting()" class="shadow btn btn-outline-primary">
+                            Cancel
+                        </button>
+                        <a href="/sightings" class="shadow btn btn-outline-danger">Back to Sighting</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <script src="/js/jquery-ui.js"></script>
+    <script src="/js/jquery.datetimepicker.full.js"></script>
+    <script src="/js/custom.js"></script>
+    <script>
+        $('#toggle').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d H:m:s',
+            hours12: false,
+            step: 30,
+            yearStart: 2018,
+            yearEnd: 2088,
+            weeks: true,
+        });
+
+    </script>
+</body>
+
+</html>

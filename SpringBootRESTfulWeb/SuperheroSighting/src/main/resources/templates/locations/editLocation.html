@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="#">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <title>Superhero</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="my-5 text-center border border-3 border-dark p-2 rounded">
+            <h1><a href="/">Superhero Sightings Spring Boot Web App</a></h1>
+        </div>
+
+        <div class="border border-3 border-dark p-4 rounded btn-toolbar d-flex flex-column flex-md-row justify-content-around d-grid gap-2 mx-auto">
+            <a href="/heros" class="btn btn-outline-primary btn-lg shadow">Hero</a>
+
+            <a href="/powers" class="btn btn-outline-primary btn-lg shadow">Power</a>
+
+            <a href="/organizations" class="btn btn-outline-primary btn-lg shadow">Organization</a>
+
+            <a href="/locations" class="btn btn-outline-primary btn-lg shadow">Location</a>
+
+            <a href="/sightings" class="btn btn-outline-primary btn-lg shadow">Sighting</a>
+        </div>
+        <div class="row border border-3 border-dark rounded my-5 mx-1">
+            <div class="col-md-3 text-center p-3 bg-light border-bottom">
+                <span class="h3">Edit Location</span>
+            </div>
+            <div class="col-md-9 text-center p-3">
+                <form action="editLocation" method="POST">
+                    <div class="form-group row my-3">
+                        <label for="name" class="col-3 col-form-label text-end">
+                            Name <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <input type="text" name="name" id="nameLocationEdit" class="form-control" th:value="${location.name}" />
+                            <div th:if="${#fields.hasErrors('location.name')}">
+                            <p th:each="error : ${#fields.errors('location.name')}" class="alert alert-danger"
+                                th:text="${error}"> Bad name </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row my-3">
+                        <label for="description" class="col-3 col-form-label text-end">
+                            Description <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <input type="text" name="description" id="descriptionLocationEdit" class="form-control" th:value="${location.description}" />
+                                <div th:if="${#fields.hasErrors('location.description')}">
+                            <p th:each="error : ${#fields.errors('location.description')}" class="alert alert-danger"
+                                th:text="${error}"> Bad description </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row my-3">
+                        <label for="address" class="col-3 col-form-label text-end">
+                            Address <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <input type="text" name="address" id="addressLocationEdit" class="form-control" th:value="${location.address}">
+                            <div th:if="${#fields.hasErrors('location.address')}">
+                            <p th:each="error : ${#fields.errors('location.address')}" class="alert alert-danger"
+                                th:text="${error}"> Bad address </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row my-3">
+                        <label for="phone" class="col-3 col-form-label text-end">
+                            Phone &nbsp;</label>
+                        <div class="col-9">
+                            <input type="text" name="phone" id="phoneLocationEdit" class="form-control" th:value="${location.phone}">
+                             <div th:if="${#fields.hasErrors('location.phone')}">
+                            <p th:each="error : ${#fields.errors('location.phone')}" class="alert alert-danger"
+                                th:text="${error}"> Bad phone </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row my-3">
+                        <label for="latitude" class="col-3 col-form-label text-end">
+                            Latitude <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <input type="text" name="latitude" id="latitudeLocationEdit" class="form-control" th:value="${location.latitude}">
+                              <div th:if="${#fields.hasErrors('location.latitude')}">
+                            <p th:each="error : ${#fields.errors('location.latitude')}" class="alert alert-danger"
+                                th:text="${error}"> Bad latitude </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row my-3">
+                        <label for="longitude" class="col-3 col-form-label text-end">
+                            Longitude <span class="text-danger">*</span></label>
+                        <div class="col-9">
+                            <input type="text" name="longitude" id="longitudeLocationEdit" class="form-control" th:value="${location.longitude}">
+                              <div th:if="${#fields.hasErrors('location.longitude')}">
+                            <p th:each="error : ${#fields.errors('location.longitude')}" class="alert alert-danger"
+                                th:text="${error}"> Bad longitude </p>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="locationId" th:value="${location.locationId}" />
+                    <div class="btn-toolbar d-flex flex-column flex-md-row justify-content-around d-grid gap-2 mx-auto py-4">
+                        <button type="submit" class="shadow btn btn-outline-success">Update Location</button>
+                        <button type="button" onclick="cancelEditLocation()" class="shadow btn btn-outline-primary">
+                            Cancel
+                        </button>
+                        <a href="/locations" class="shadow btn btn-outline-danger">Back to Location</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <script src="/js/custom.js"></script>
+</body>
+
+</html>

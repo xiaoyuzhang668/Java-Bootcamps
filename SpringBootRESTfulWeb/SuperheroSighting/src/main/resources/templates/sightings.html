@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="#">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.datetimepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.theme.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <title>Superhero</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="my-5 text-center border border-3 border-dark p-2 rounded">
+            <h1><a href="/">Superhero Sightings Spring Boot Web App</a></h1>
+        </div>
+
+        <div class="border border-3 border-dark p-4 rounded btn-toolbar d-flex flex-column flex-md-row justify-content-around d-grid gap-2 mx-auto">
+            <a href="heros" class="btn btn-outline-primary btn-lg shadow">Hero</a>
+
+            <a href="powers" class="btn btn-outline-primary btn-lg shadow">Power</a>
+
+            <a href="organizations" class="btn btn-outline-primary btn-lg shadow">Organization</a>
+
+            <a href="locations" class="btn btn-outline-primary btn-lg shadow">Location</a>
+
+            <a href="sightings" class="btn btn-outline-primary btn-lg shadow">Sighting</a>
+        </div>
+        <div class="text-center my-4">
+            <a href="sightings/addSighting" class="btn shadow btn-outline-primary btn-lg">Add New Sighting</a>
+        </div>
+        <div class="row border border-3 border-dark rounded my-3 mx-1">
+            <div class="col text-center p-3 table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Hero Name</th>
+                            <th>Location Name</th>
+                            <th>Sighting Date/Time</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sighting : ${sightings}">
+                            <td th:text="${sighting.sightingId}">Sighting Id</td>
+                            <td th:text="${sighting.hero.name}">Hero Name</td>
+                            <td th:text="${sighting.location.name}">Location Name</td>
+                            <td th:text="${sighting.sightingDate}">Sighting Date</td>
+                            <td class="align-middle"><a href="#" th:href="@{/sightings/sightingDetail(sightingId=${sighting.sightingId})}">Details</a></td>
+                            <td class="align-middle"><a href="#" th:href="@{/sightings/editSighting(sightingId=${sighting.sightingId})}">Edit</a></td>
+                            <td class="align-middle"><a href="#" data-bs-toggle="modal" th:data-bs-target="'#deleteModalSighting' + ${sighting.sightingId}">Delete
+                                </a>
+                                <!--        DELETE FORM POP UP-->
+                                <div class="modal fade" th:id="'deleteModalSighting' + ${sighting.sightingId}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body m-5 pb-5">
+                                                Are you sure you want to delete this sighting "<strong>
+                                                    <u>
+                                                        Sighting ID <scan th:text="${sighting.sightingId}"> </scan>
+                                                    </u>
+                                                </strong>" from the database?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <a href="#" th:href="@{/deleteSighting(sightingId=${sighting.sightingId})}" class="btn btn-outline-danger">Yes</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="my-5 text-center border border-3 border-dark p-2 py-5 rounded">
+            <form action="sightings/searchSightingByDate" METHOD="GET">
+                <div class="row my-3">
+                    <label for="sightingDate" class="col-lg-3 col-md-5 offset-lg-2 col-form-label text-md-end"><strong>
+                            Get Sighting By Date</strong></label>
+                    <div class="col-lg-5 col-md-7">
+                        <div class="input-group">
+                            <label for="toggleDate" class="input-group-text">
+                                <img src="/images/calendar.png" alt="calendar" class="calendar">
+                            </label>
+                            <input type="text" name="sightingDateForSearch" id="toggleDate" class="form-control" ReadOnly="ReadOnly" th:value="${sightingDateForSearch}" placeholder="--- Please Select Sighting Date ---" max=" " title="Please enter a date less than or equal to today's date." required onchange="setValue()" />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-toolbar d-flex justify-content-center d-grid gap-4 mx-auto">
+                    <button class="shadow btn btn-outline-success" id="searchByDate">Search by Date</button>
+                    <button type="button" class="btn btn-outline-secondary">Cancel</button>
+                </div>
+            </form>
+            <hr class="my-5">
+            <form action="sightings/searchSightingByHero" METHOD="GET">
+                <div class="row my-3">
+                    <label for="hero" class="col-lg-3 col-md-5 offset-lg-2 col-form-label text-md-end"><strong>
+                            Search Sighting By Hero/Villain</strong></label>
+                    <div class="col-lg-5 col-md-7">
+                        <select id="hero" name="heroIdForSearch" class="form-select">
+                            <option value="0">
+                                ---- Please select a hero name ----</option>
+                            <option th:each="hero : ${heros}" name="heroIdForSearch" th:value="${hero.heroId}" th:text="${hero.name} + ' - ' + ${hero.description}">
+                                Hero Name</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-toolbar d-flex justify-content-center d-grid gap-4 mx-auto">
+                    <button class="shadow btn btn-outline-success" id="searchByHero">Search by Hero</button>
+                    <button type="button" class="btn btn-outline-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <script src="/js/jquery-ui.js"></script>
+    <script src="/js/jquery.datetimepicker.full.js"></script>
+    <script src="/js/custom.js"></script>
+
+    <script type="text/javascript">
+        $('#toggleDate').datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: 'Y-m-d',
+            hours12: false,
+            step: 30,
+            yearStart: 2018,
+            yearEnd: 2088,
+            weeks: true,
+            changeMonth: true,
+            changeYear: true,
+            //    showOn: 'button',
+            // buttonImage: 'jquery/images/calendar.gif',
+            // buttonImageOnly: true
+        });
+
+        function setValue() {
+            var value = $("#toggleDate").val();
+            document.getElementById("tempDate").value = value;
+        }
+
+
+        //        $('#searchByDate').unbind("click");
+        // $('#searchByDate').bind("click", function() {
+        // var searchDate = $('#toggleDate').val();
+        //
+        // $.ajax({
+        // url: "?searchByDate=" + searchDate,
+        // type: "GET", //send it through get method,
+        // success: function(response) {
+        // //Do Something
+        // },
+        // error: function(xhr) {
+        // //Do Something to handle error
+        // }
+        // });
+        //
+        // });
+
+    </script>
+
+</body>
+
+</html>

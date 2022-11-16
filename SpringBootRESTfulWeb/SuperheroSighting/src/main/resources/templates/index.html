@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="#">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <script src=" https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
+    </script>
+    <script>
+        const deviceIdArray = [];
+        const latArray = [];
+        const lngArray = [];
+
+    </script>
+    <title>Superhero</title>
+</head>
+
+<body>
+    <div class="container pb-5">
+        <div class="my-5 text-center border border-3 border-dark p-2 rounded">
+            <h1><a href="/">Superhero Sightings Spring Boot Web App</a></h1>
+        </div>
+
+        <div class="my-2 p-3 border border-3 border-dark py-2 rounded">
+            <h6 style="text-align: justify;">With the rising popularity of superhero movies, there has been a heightened awareness of superheroes in our midst. The frequency of superhero (and supervillain) sightings is increasing at an alarming rate.
+                Here is an Spring Boot web application on top of the Superhero Sightings Data Layer. </h6>
+            <p>All pages provide navigation links to the Supers, Powers, Locations, Organizatios and Sightings. </p>
+        </div>
+
+        <div class="border border-3 border-dark p-4 rounded btn-toolbar d-flex flex-column flex-md-row justify-content-around d-grid gap-2 mx-auto">
+            <a href="/heros" class="btn btn-outline-primary btn-lg shadow">Hero</a>
+
+            <a href="/powers" class="btn btn-outline-primary btn-lg shadow">Power</a>
+
+            <a href="/organizations" class="btn btn-outline-primary btn-lg shadow">Organization</a>
+
+            <a href="/locations" class="btn btn-outline-primary btn-lg shadow">Location</a>
+
+            <a href="/sightings" class="btn btn-outline-primary btn-lg shadow">Sighting</a>
+        </div>
+
+        <div class="row border border-3 border-dark rounded my-3 mx-1">
+            <div class="col text-center p-3 table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Hero</th>
+                            <th>Location</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Sighting Date/Time</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sighting : ${sightings}">
+                            <td th:text="${sighting.sightingId}">Hero Id</td>
+                            <td th:text="${sighting.hero.name}">Hero Name</td>
+                            <td th:text="${sighting.location.name}">Location Name</td>
+                            <td th:text="${sighting.location.latitude}">Lantitude</td>
+                            <td th:text="${sighting.location.longitude}">Longitude</td>
+                            <td th:text="${sighting.sightingDate}">Sighting Date/Time</td>
+                            <td><a href="#" th:href="@{/sightings/sightingDetail(sightingId=${sighting.sightingId})}">Details</a></td>
+                            <td><button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" th:data-bs-target="'#staticBackdrop' + ${sighting.sightingId}" id="action">
+                                    <scan th:text="${sighting.location.name}"></scan>
+                                </button>
+                                <div class="modal fade" th:id="'staticBackdrop'+${sighting.sightingId}" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                                                    <scan th:text="${sighting.location.name}"></scan>
+                                                </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Latitude: <span><input type="text" id="lat" th:value="${sighting.location.latitude}" disabled></span></p>
+                                                <p>Longitude: <input type="text" id="lng" th:value="${sighting.location.longitude}" disabled></p>
+                                                <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" th:src="${sighting.location.tempUrl}"></iframe>
+                                                <script th:inline="javascript">
+                                                    latArray.push( /*[[${sighting.location.latitude}]]*/ );
+                                                    lngArray.push( /*[[${sighting.location.longitude}]]*/ );
+                                                    deviceIdArray.push( /*[[${sighting.location.name}]]*/ );
+
+                                                </script>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="map2" style="height: 800px;"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/custom.js}"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=&v=weekly"></script>
+
+    <script>
+        // Just create map according to the first geo info
+        var map = new google.maps.Map(document.getElementById("map2"), {
+            center: {
+                lat: +latArray[0],
+                lng: +lngArray[0]
+            },
+            zoom: 2
+        });
+
+        // Loop throuhg all geo info
+        latArray.forEach(function(lat, i) {
+            // For each one create info window
+            var infoWindow = new google.maps.InfoWindow({
+                content: '<div id="content>' +
+                    '<h3 style="color:#000000">Location Address</h3>' +
+                    '<h6>' + deviceIdArray[i] + '</h6>' +
+                    '</div>'
+
+            });
+
+            // For each one create marker
+            var marker = new google.maps.Marker({
+                map: map,
+                position: {
+                    lat: +latArray[i],
+                    lng: +lngArray[i]
+                }
+            });
+
+            // Click on the currently created marker will show the right info window
+            marker.addListener("click", function() {
+                infoWindow.open(map, marker);
+            });
+        });
+
+    </script>
+</body>
+
+</html>
