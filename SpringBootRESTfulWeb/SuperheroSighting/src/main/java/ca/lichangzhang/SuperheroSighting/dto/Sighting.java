@@ -3,7 +3,10 @@ package ca.lichangzhang.SuperheroSighting.dto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Email: xiaoyuzhang668@gmail.com Date: 2022
@@ -17,8 +20,9 @@ public class Sighting {
     private Hero hero;
 
     private Location location;
-   
+
     @NotBlank(message = "Sighting description must not be empty.")
+    @Size(max = 255, message = "Sighting description must be less than 255 characters")
     private String description;
 
     @NotBlank(message = "Sighting Date must not be empty.")
@@ -28,9 +32,12 @@ public class Sighting {
     DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Sighting() {
-        
     }
-  
+
+    public Sighting(int sightingId) {
+        this.sightingId = sightingId;
+    }
+
     public int getSightingId() {
         return sightingId;
     }
@@ -73,9 +80,9 @@ public class Sighting {
 
     public LocalDateTime getFormatted() {
         LocalDateTime formatted = null;
-           if (this.getSightingDate() != null) {
+        if (this.getSightingDate() != null) {
             formatted = LocalDateTime.parse(this.getSightingDate(), formatter);
-        }        
+        }
         return formatted;
     }
 

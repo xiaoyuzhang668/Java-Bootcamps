@@ -10,6 +10,7 @@ import ca.lichangzhang.SuperheroSighting.dto.Location;
 import ca.lichangzhang.SuperheroSighting.dto.Organization;
 import ca.lichangzhang.SuperheroSighting.dto.Power;
 import ca.lichangzhang.SuperheroSighting.dto.Sighting;
+import ca.lichangzhang.SuperheroSighting.service.SuperHeroNullException;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -81,7 +82,7 @@ public class HeroDaoDBTest {
      * Test of getHeroById method, of class HeroDaoDB.
      */
     @Test
-    public void testAddAndGetHero() {
+    public void testAddAndGetHero() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -108,15 +109,15 @@ public class HeroDaoDBTest {
         hero.setOrganizations(organizations);
         hero = heroDao.addHero(hero);
 
-        Hero fromDao = heroDao.getHeroById(hero.getHeroId());
-        assertEquals(hero, fromDao);
+        Hero fromDao = heroDao.getHeroById(hero.getHeroId()); 
+        assertEquals(hero, fromDao);   
     }
 
     /**
      * Test of getAllHeros method, of class HeroDaoDB.
      */
     @Test
-    public void testGetAllHeros() {
+    public void testGetAllHeros() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -162,7 +163,7 @@ public class HeroDaoDBTest {
      * Test of updateHero method, of class HeroDaoDB.
      */
     @Test
-    public void testUpdateHero() {
+    public void testUpdateHero() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -189,7 +190,7 @@ public class HeroDaoDBTest {
         hero.setDescription("Test Superhero Description");
         hero.setPower(power);
         hero.setOrganizations(organizations);
-        hero.setPhoto(b);
+   
         hero = heroDao.addHero(hero);
 
         Hero fromDao = heroDao.getHeroById(hero.getHeroId());
@@ -209,7 +210,7 @@ public class HeroDaoDBTest {
      * Test of deleteHeroById method, of class HeroDaoDB.
      */
     @Test
-    public void testDeleteHeroById() {
+    public void testDeleteHeroById() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -249,7 +250,7 @@ public class HeroDaoDBTest {
      * Test of getHeroForLocation method, of class HeroDaoDB.
      */
     @Test
-    public void testGetHeroForLocation() {
+    public void testGetHeroForLocation() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -343,7 +344,7 @@ public class HeroDaoDBTest {
      * Test of getHeroForOrganization method, of class HeroDaoDB.
      */
     @Test
-    public void testGetHeroForOrganization() {
+    public void testGetHeroForOrganization() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");

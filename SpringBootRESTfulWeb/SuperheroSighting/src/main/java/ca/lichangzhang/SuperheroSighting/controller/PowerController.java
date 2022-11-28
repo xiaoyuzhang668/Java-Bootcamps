@@ -1,25 +1,16 @@
 package ca.lichangzhang.SuperheroSighting.controller;
 
-import ca.lichangzhang.SuperheroSighting.dto.Hero;
 import ca.lichangzhang.SuperheroSighting.dto.Power;
 import ca.lichangzhang.SuperheroSighting.service.HeroService;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Email: xiaoyuzhang668@gmail.com Date: 2022
@@ -45,7 +36,7 @@ public class PowerController {
     public String displayAddPowers(Model model) {
 
         model.addAttribute("power", new Power());
-
+        
         return "powers/addPower";
     }
 
@@ -77,11 +68,14 @@ public class PowerController {
     public String deletePower(Integer powerId) {
 
         heroService.deletePowerById(powerId);
+        
         return "redirect:/powers";
     }
 
     @GetMapping("powers/editPower")
-    public String editPower(Integer powerId, Model model) {
+    public String editPower(
+            Integer powerId, 
+            Model model) {
 
         Power power = heroService.getPowerById(powerId);
         model.addAttribute("power", power);
@@ -90,18 +84,23 @@ public class PowerController {
     }
 
     @PostMapping("powers/editPower")
-    public String performEditPower(@Valid Power power, BindingResult result, Model model) {
+    public String performEditPower(
+            @Valid Power power, 
+            BindingResult result) {
 
           if (result.hasErrors()) {
             return "powers/editPower";
         }
         
         heroService.updatePower(power);
+        
         return "redirect:/powers";
     }
 
     @GetMapping("powers/powerDetail")
-    public String powerDetail(Integer powerId, Model model) {
+    public String powerDetail(
+            Integer powerId, 
+            Model model) {
 
         Power power = heroService.getPowerById(powerId);
         model.addAttribute("power", power);

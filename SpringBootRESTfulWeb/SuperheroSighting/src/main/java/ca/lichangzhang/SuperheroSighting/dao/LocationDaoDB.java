@@ -29,8 +29,6 @@ public class LocationDaoDB implements LocationDao {
             + "VALUES(?, ?, ?, ?, ?, ?)";
     final String UPDATE_LOCATION = "UPDATE location SET name = ?, description = ?, "
             + "address = ?, phone = ?, latitude = ?, longitude = ? WHERE locationId = ?";
-    final String UPDATE_SIGHTING = "UPDATE sighting SET locationId = NULL "
-            + "WHERE locationId = ?";
     final String DELETE_LOCATION_FOR_ID = "DELETE FROM location WHERE locationId = ?";
     final String GET_LOCATION_FOR_HERO = "SELECT DISTINCT L.* FROM location AS L "
             + "INNER JOIN sighting AS S ON L.locationId = S.locationId "
@@ -90,7 +88,6 @@ public class LocationDaoDB implements LocationDao {
     @Transactional
     public void deleteLocationById(int locationId) {
 
-        jdbc.update(UPDATE_SIGHTING, locationId);
         jdbc.update(DELETE_LOCATION_FOR_ID, locationId);
     }
 

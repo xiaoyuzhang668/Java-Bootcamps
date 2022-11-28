@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -66,12 +67,21 @@ public class SightingDaoDB implements SightingDao {
 
     private Hero getHeroForSighting(int sightingId) {
 
-        Hero hero = jdbc.queryForObject(GET_HERO_FOR_SIGHTING, new HeroMapper(), sightingId);
+        try {
+            Hero hero = jdbc.queryForObject(GET_HERO_FOR_SIGHTING, new HeroMapper(), sightingId);
 
-        hero.setPower(getPowerForHero(hero.getHeroId()));
-        hero.setOrganizations(getOrganizationsForHero(hero.getHeroId()));
+            Power power = getPowerForHero(hero.getHeroId());
+if(power != null){
+  hero.setPower(power);
+}
+           
+            hero.setOrganizations(getOrganizationsForHero(hero.getHeroId()));
 
-        return hero;
+            return hero;
+        } catch (DataAccessException ex) {
+            return null;
+        }
+
     }
 
     private Power getPowerForHero(int heroId) {
@@ -88,7 +98,11 @@ public class SightingDaoDB implements SightingDao {
 
     private Location getLocationForSighting(int sightingId) {
 
-        return jdbc.queryForObject(GET_LOCATION_FOR_SIGHTING, new LocationMapper(), sightingId);
+         try {
+             return jdbc.queryForObject(GET_LOCATION_FOR_SIGHTING, new LocationMapper(), sightingId);
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -147,7 +161,6 @@ public class SightingDaoDB implements SightingDao {
         jdbc.update(DELETE_SIGHTING, sightingId);
     }
 
-  
 //     report all sightings (hero and location) for a particular date.
     @Override
     public List<Sighting> getSightingForDate(LocalDate sightingDateForSearch) {

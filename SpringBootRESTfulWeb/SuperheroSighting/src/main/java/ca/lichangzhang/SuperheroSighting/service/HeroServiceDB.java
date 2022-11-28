@@ -13,6 +13,8 @@ import ca.lichangzhang.SuperheroSighting.dto.Sighting;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -54,7 +56,12 @@ public class HeroServiceDB implements HeroService {
 
     @Override
     public Hero addHero(Hero hero) {
-        return heroDao.addHero(hero);
+        try {
+             heroDao.addHero(hero);
+        } catch (SuperHeroNullException ex) {
+            Logger.getLogger(HeroServiceDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return hero;
     }
 
     @Override
@@ -187,20 +194,12 @@ public class HeroServiceDB implements HeroService {
     }
 
     @Override
-    public Sighting addSighting(Sighting sighting) throws
-            SuperHeroNullException {
-
-        validateNullHeroException(sighting);
-        validateNullLocationException(sighting);
+    public Sighting addSighting(Sighting sighting)  {  
         return sightingDao.addSighting(sighting);
     }
 
     @Override
-    public void updateSighting(Sighting sighting) throws
-              SuperHeroNullException {
-
-        validateNullHeroException(sighting);
-        validateNullLocationException(sighting);
+    public void updateSighting(Sighting sighting)  {       
         sightingDao.updateSighting(sighting);
     }
 
@@ -215,38 +214,12 @@ public class HeroServiceDB implements HeroService {
     }
 
     @Override
-    public List<Sighting> getSightingForDate(LocalDate sightingDateForSearch) throws
-              SuperHeroNullException {
-        validateNullDateException(sightingDateForSearch);
+    public List<Sighting> getSightingForDate(LocalDate sightingDateForSearch) {
         return sightingDao.getSightingForDate(sightingDateForSearch);
     }
 
     @Override
     public List<Sighting> getSightingForHero(int heroIdForSearch) {
         return sightingDao.getSightingForHero(heroIdForSearch);
-    }
-
-    private void validateNullHeroException(Sighting sighting) throws
-            SuperHeroNullException {
-        if (sighting.getHero() == null) {
-            throw new SuperHeroNullException(
-                    " Error: hero selection must not be null.");
-        }
-    }
-
-    private void validateNullLocationException(Sighting sighting) throws
-            SuperHeroNullException {
-        if (sighting.getLocation() == null) {
-            throw new SuperHeroNullException(
-                    " Error: Location selection must not be null.");
-        }
-    }
-    
-      private void validateNullDateException(LocalDate sightingDateForSearch) throws
-            SuperHeroNullException {
-        if (sightingDateForSearch.toString() == "" || sightingDateForSearch.toString() == null || sightingDateForSearch.toString().length() == 0) {
-            throw new SuperHeroNullException(
-                    " Error: Search date must not be null.");
-        }
     }
 }

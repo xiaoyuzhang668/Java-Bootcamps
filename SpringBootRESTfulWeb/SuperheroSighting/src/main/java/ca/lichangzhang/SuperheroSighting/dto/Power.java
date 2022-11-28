@@ -21,6 +21,9 @@ public class Power {
     @Size(max = 255, message = "Power description must be less than 255 characters.")
     private String description;
      
+    public Power() {        
+    }
+     
     public int getPowerId() {
         return powerId;
     }

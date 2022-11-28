@@ -30,9 +30,16 @@ public class Organization {
     @Size(max = 100, message = "Organization contact must be less than 100 characters.")
     private String contact;
 
-   @Size(max = 11, message = "Organization phone must be less than 11 characters.")
-   @Pattern(regexp = "^(0|[1-9][0-9]*|)$", message = "Organization phone must be all numeric.") 
+    @Size(max = 11, message = "Organization phone must be less than 11 characters.")
+    @Pattern(regexp = "^(0|[1-9][0-9]*|)$", message = "Organization phone must be all numeric and does not begin with zero.") 
     private String phone;
+    
+    public Organization() {        
+    }
+    
+    public Organization(int organizationId) {    
+         this.organizationId = organizationId;
+    }
 
     public int getOrganizationId() {
         return organizationId;

@@ -88,7 +88,7 @@
         </div>
 
         <div class="my-5 text-center border border-3 border-dark p-2 py-5 rounded">
-            <form action="sightings/searchSightingByDate" METHOD="GET">
+            <form action="sightings/searchSightingByDate" METHOD="GET" id="searchByDate">
                 <div class="row my-3">
                     <label for="sightingDate" class="col-lg-3 col-md-5 offset-lg-2 col-form-label text-md-end"><strong>
                             Get Sighting By Date</strong></label>
@@ -97,18 +97,17 @@
                             <label for="toggleDate" class="input-group-text">
                                 <img src="/images/calendar.png" alt="calendar" class="calendar">
                             </label>
-                            <input type="text" name="sightingDateForSearch" id="toggleDate" class="form-control" ReadOnly="ReadOnly" th:value="${sightingDateForSearch}" placeholder="--- Please Select Sighting Date ---" max=" " title="Please enter a date less than or equal to today's date." required onchange="setValue()" />
-
+                            <input type="date" name="sightingDateForSearch" id="toggleDate" class="form-control" ReadOnly="ReadOnly" th:value="${sightingDateForSearch}">
                         </div>
+                        <div id="no-date-error"></div>
                     </div>
                 </div>
-                <div class="btn-toolbar d-flex justify-content-center d-grid gap-4 mx-auto">
+                <div class="mx-auto">
                     <button class="shadow btn btn-outline-success" id="searchByDate">Search by Date</button>
-                    <button type="button" class="btn btn-outline-secondary">Cancel</button>
                 </div>
             </form>
             <hr class="my-5">
-            <form action="sightings/searchSightingByHero" METHOD="GET">
+            <form action="sightings/searchSightingByHero" METHOD="GET" id="searchByHero">
                 <div class="row my-3">
                     <label for="hero" class="col-lg-3 col-md-5 offset-lg-2 col-form-label text-md-end"><strong>
                             Search Sighting By Hero/Villain</strong></label>
@@ -119,23 +118,27 @@
                             <option th:each="hero : ${heros}" name="heroIdForSearch" th:value="${hero.heroId}" th:text="${hero.name} + ' - ' + ${hero.description}">
                                 Hero Name</option>
                         </select>
+                        <div id="no-name-error"></div>
                     </div>
                 </div>
-                <div class="btn-toolbar d-flex justify-content-center d-grid gap-4 mx-auto">
+                <div class="mx-auto">
                     <button class="shadow btn btn-outline-success" id="searchByHero">Search by Hero</button>
-                    <button type="button" class="btn btn-outline-secondary">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/jquery.datetimepicker.full.js"></script>
-    <script src="/js/custom.js"></script>
-
     <script type="text/javascript">
+        jQuery.validator.addMethod("minDate", function(value, element) {
+            var now = new Date();
+            var myDate = new Date(value);
+            return this.optional(element) || myDate <= now;
+        });
         $('#toggleDate').datetimepicker({
             timepicker: false,
             datepicker: true,
@@ -152,28 +155,56 @@
             // buttonImageOnly: true
         });
 
-        function setValue() {
-            var value = $("#toggleDate").val();
-            document.getElementById("tempDate").value = value;
-        }
+        jQuery(document).ready(function($) {
+            $('#searchByDate').validate({
+                errorClass: "alert alert-danger",
+                rules: {
+                    sightingDateForSearch: {
+                        required: true,
+                        minDate: true
+                    },
+                },
+                messages: {
+                    sightingDateForSearch: {
+                        required: "Search date must not be empty.",
+                        minDate: "Search date must be in the past."
+                    },
+                },
+                errorElement: "div",
+                errorPlacement: function(error, element) {
+                    if (element.attr("name") == "sightingDateForSearch") {
+                        $("#no-date-error").html(error);
+                    }
+                }
+            })
+        });
 
-
-        //        $('#searchByDate').unbind("click");
-        // $('#searchByDate').bind("click", function() {
-        // var searchDate = $('#toggleDate').val();
-        //
-        // $.ajax({
-        // url: "?searchByDate=" + searchDate,
-        // type: "GET", //send it through get method,
-        // success: function(response) {
-        // //Do Something
-        // },
-        // error: function(xhr) {
-        // //Do Something to handle error
-        // }
-        // });
-        //
-        // });
+        $.validator.addMethod("notEqualTo", function(value, element, param) {
+            return this.optional(element) || value != param;
+        }, "This field is required");
+        jQuery(document).ready(function($) {
+            $('#searchByHero').validate({
+                errorClass: "alert alert-danger",
+                rules: {
+                    heroIdForSearch: {
+                        required: true,
+                        notEqualTo: 0
+                    },
+                },
+                messages: {
+                    heroIdForSearch: {
+                        required: "Search by hero name must not be empty.",
+                        notEqualTo: "Search by hero name must not be empty."
+                    },
+                },
+                errorElement: "div",
+                errorPlacement: function(error, element) {
+                    if (element.attr("name") == "heroIdForSearch") {
+                        $("#no-name-error").html(error);
+                    }
+                }
+            })
+        });
 
     </script>
 

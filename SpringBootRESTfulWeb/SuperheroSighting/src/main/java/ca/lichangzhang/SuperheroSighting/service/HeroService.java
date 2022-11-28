@@ -76,19 +76,16 @@ public interface HeroService {
 
     List<Sighting> getAllSightings();
 
-    Sighting addSighting(Sighting sighting) throws
-             SuperHeroNullException;
+    Sighting addSighting(Sighting sighting);
 
-    void updateSighting(Sighting sighting)throws
-              SuperHeroNullException;
+    void updateSighting(Sighting sighting);
 
     void deleteSightingById(int sightingId);
 
     List<Sighting> getAll10RecentSightings();
 
-    List<Sighting> getSightingForDate(LocalDate sightingDateForSearch) throws
-              SuperHeroNullException;
-    
-     List<Sighting> getSightingForHero(int heroIdForSearch);
+    List<Sighting> getSightingForDate(LocalDate sightingDateForSearch);
+
+    List<Sighting> getSightingForHero(int heroIdForSearch);
 
 }

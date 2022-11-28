@@ -39,38 +39,38 @@
                 <form action="addSighting" method="POST">
                     <div class="form-group row my-3">
                         <label for="heroSighting" class="col-3 col-form-label text-end">
-                            Hero Name <span class="text-danger">*</span></label>
+                            Hero Name &nbsp;</label>
                         <div class="col-9">
                             <select id="heroSighting" name="heroId" class="form-select">
-                                <option value="0" selected>
+                                <option value="0">
                                     ---- Please select a hero name ----</option>
                                 <option th:each="hero : ${heros}" th:value="${hero.heroId}" th:text="${hero.name}">
                                     Hero Name</option>
                             </select>
                             <div th:if="${#fields.hasErrors('sighting.hero')}">
-                               <p th:each="error : ${#fields.errors('sighting.hero')}">
-                                    <p class="alert alert-danger" th:text="${error}">
-                                        Bad hero</p>
-                           </div>
+                                    <p th:each="error : ${#fields.errors('sighting.hero')}"
+                                        class="alert alert-danger" th:text="${error}">
+                                            Bad name</p>
+                                </div>                                                   
                         </div>
                     </div>
-                    <div class="form-group row my-3">
+                       <div class="form-group row my-3">
                         <label for="locationSighting" class="col-3 col-form-label text-end">
-                            Location Name <span class="text-danger">*</span></label>
+                            Location Name &nbsp;</label>
                         <div class="col-9">
-                            <select id="locationSighting" name="locationId" class="form-select">
-                                <option value="0" selected>
+                            <select id="heroSighting" name="locationId" class="form-select">
+                                <option value="0">
                                     ---- Please select a location name ----</option>
                                 <option th:each="location : ${locations}" th:value="${location.locationId}" th:text="${location.name}">
                                     Location Name</option>
                             </select>
-                          <div th:if="${#fields.hasErrors('sighting.location')}">
-                               <p th:each="error : ${#fields.errors('sighting.location')}">
-                            <p class="alert alert-danger" th:text="${error}">
-                                Bad location</p>
-                          </div>
+                            <div th:if="${#fields.hasErrors('sighting.location')}">
+                                    <p th:each="error : ${#fields.errors('sighting.location')}"
+                                        class="alert alert-danger" th:text="${error}">
+                                            Bad name</p>
+                                </div>                                                   
                         </div>
-                    </div>
+                    </div>            
                     <div class="form-group row my-3">
                         <label for="descriptionSighting" class="col-3 col-form-label text-end">
                             Description <span class="text-danger">*</span></label>
@@ -91,7 +91,7 @@
                                 <label for="toggle" class="input-group-text">
                                     <img src="/images/calendar.png" alt="calendar" class="calendar">
                                 </label>
-                                <input type="text"  name="sightingDate" id="toggle" class="form-control datepicker" ReadOnly="ReadOnly" th:value="${sighting.sightingDate}" placeholder="--- Please Select Sighting Date ---" max=" " title="Please enter a date less than or equal to today's date." required />                                  
+                                <input type="text"  name="sightingDate" id="toggle" class="form-control datepicker" ReadOnly="ReadOnly" th:value="${sighting.sightingDate}" placeholder="--- Please Select Sighting Date ---" title="Please enter a date less than or equal to today's date." required />                                  
                             </div>
                               <div th:if="${#fields.hasErrors('sighting.sightingDate')}">
                                     <p th:each="error : ${#fields.errors('sighting.sightingDate')}"
@@ -103,10 +103,7 @@
     
                     <div class="btn-toolbar d-flex flex-column flex-md-row justify-content-around d-grid gap-2 mx-auto py-4">
                         <button type="submit" class="shadow btn btn-outline-success">Add Sighting</button>
-                        <button type="button" onclick="cancelAddSighting()" class="shadow btn btn-outline-primary">
-                            Cancel
-                        </button>
-                        <a href="/sightings" class="shadow btn btn-outline-danger">Back to Sighting</a>
+                                               <a href="/sightings" class="shadow btn btn-outline-danger">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -119,7 +116,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/jquery.datetimepicker.full.js"></script>
-    <script src="/js/custom.js"></script>
     <script>
         $('#toggle').datetimepicker({
             timepicker: true,

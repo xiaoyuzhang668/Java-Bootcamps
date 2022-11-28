@@ -10,6 +10,7 @@ import ca.lichangzhang.SuperheroSighting.dto.Location;
 import ca.lichangzhang.SuperheroSighting.dto.Organization;
 import ca.lichangzhang.SuperheroSighting.dto.Power;
 import ca.lichangzhang.SuperheroSighting.dto.Sighting;
+import ca.lichangzhang.SuperheroSighting.service.SuperHeroNullException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -148,7 +149,7 @@ public class OrganizationDaoDBTest {
      * Test of deleteOrganizationById method, of class OrganizationDaoDB.
      */
     @Test
-    public void testDeleteOrganizationById() {
+    public void testDeleteOrganizationById() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -185,7 +186,7 @@ public class OrganizationDaoDBTest {
     }
 
     @Test
-    public void testGetOrganizationForHero() {
+    public void testGetOrganizationForHero() throws SuperHeroNullException, SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");

@@ -10,6 +10,7 @@ import ca.lichangzhang.SuperheroSighting.dto.Location;
 import ca.lichangzhang.SuperheroSighting.dto.Organization;
 import ca.lichangzhang.SuperheroSighting.dto.Power;
 import ca.lichangzhang.SuperheroSighting.dto.Sighting;
+import ca.lichangzhang.SuperheroSighting.service.SuperHeroNullException;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -159,7 +160,7 @@ public class LocationDaoDBTest {
      * Test of deleteLocationById method, of class LocationDaoDB.
      */
     @Test
-    public void testDeleteLocationById() {
+    public void testDeleteLocationById() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -216,7 +217,7 @@ public class LocationDaoDBTest {
     }
 
     @Test
-    public void testGetLocationForHero() {
+    public void testGetLocationForHero() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");

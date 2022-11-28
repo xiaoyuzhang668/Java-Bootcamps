@@ -40,9 +40,7 @@
                             Name <span class="text-danger">*</span></label>
                         <div class="col-9">
                             <input type="text" name="name" id="nameHeroEdit" class="form-control" th:value="${hero.name}" />
-                            <div th:if="${#fields.hasErrors('hero.name')}">
-                              <p th:each="error : ${#fields.errors('hero.name')}" class="alert alert-danger"
-                                th:text="${error}"> Bad  name </p>
+                            <div class="alert w-100" th:classappend="${heroNameMessage} ? alert-danger : '' " th:text="${heroNameMessage}" name="heroNameMessage" id="heroNameMessage">
                             </div>
                         </div>
                     </div>
@@ -65,16 +63,16 @@
                             Description <span class="text-danger">*</span></label>
                         <div class="col-9">
                             <input type="text" name="description" id="descriptionHeroEdit" class="form-control" th:value="${hero.description}" />
-                         <div th:if="${#fields.hasErrors('hero.description')}">
-                              <p th:each="error : ${#fields.errors('hero.description')}" class="alert alert-danger" 
-                                th:text="${error}"> Bad description</p>
+                            <div class="alert w-100" th:classappend="${heroDescriptionMessage} ? alert-danger : '' " th:text="${heroDescriptionMessage}" name="heroDescriptionMessage" id="heroDescriptionMessage">
                             </div>
                         </div>
                     </div>
                     <div class="form-group row my-3">
                         <label for="power" class="col-3 col-form-label text-end">Power &nbsp;</label>
                         <div class="col-9">
-                            <select id="power" name="powerId" class="form-control">
+                            <select id="power" name="powerId" class="form-select">
+                                <option value="0">
+                                    ---- Please select a power name ----</option>
                                 <option th:each="power : ${powers}" th:value="${power.powerId}" th:text="${power.name + ' - ' 
                                                 + power.description}" th:selected="${hero.power.powerId == power.powerId}">
                                     Power Name</option>
@@ -89,28 +87,23 @@
                                                 + organization.description}" th:selected="${hero.organizations.contains(organization)}">
                                     Organization Name </option>
                             </select>
-                             <div th:if="${#fields.hasErrors('hero.organizations')}">
-                                    <p th:each="error : ${#fields.errors('hero.organizations')}" 
-                                       class="alert alert-danger" th:text="${error}"> 
-                                        Bad organization </p>
-                                </div>
+                            <div class="alert w-100" th:classappend="${heroOrganizationMessage} ? alert-danger : '' " th:text="${heroOrganizationMessage}" name="heroOrganizationMessage" id="heroOrganizationMessage">
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row my-3">
                         <label for="photoEdit" class="col-3 col-form-label text-end">Hero/Villain Image &nbsp;</label>
                         <div class="col-9 text-start">
-                            <div>                               
-                                <img th:src="${hero.tempPhoto}" alt="No image uploaded." style="height:150px; width: 150px" class="img-fluid img-thumbnail mx-4" id="originalPhoto" />                                
+                            <div>
+                                <img th:src="${hero.tempPhoto}" alt="No image uploaded." style="height:150px; width: 150px" class="img-fluid img-thumbnail mx-4" id="originalPhoto" />
                             </div>
                             <div class="input-group my-3">
                                 <label class="input-group-text btn btn-outline-primary rounded" for="photoEdit" onchange="loadFile(event)">Change Image</label>
                                 <input type="button" class="ms-3 btn btn-outline-danger rounded" value="Remove Image" onclick="removeImage();">
                                 <input type="file" class="form-control" id="photoEdit" style="visibility: hidden" name="photo" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)">
                                 <input type="hidden" id="removeText" name="removeText">
-                                 <div th:if="${#fields.hasErrors('hero.photo')}">
-                              <p th:each="error : ${#fields.errors('hero.photo')}" class="alert alert-danger" 
-                                th:text="${error}"> Bad description</p>
-                            </div>
+                                <div class="alert w-100" th:classappend="${heroPhotoMessage} ? alert-danger : '' " th:text="${heroPhotoMessage}" name="heroPhotoMessage" id="heroPhotoMessage">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -118,10 +111,7 @@
                     <hr>
                     <div class="btn-toolbar d-flex flex-column flex-md-row justify-content-around d-grid gap-2 mx-auto py-4">
                         <button type="submit" class="shadow btn btn-outline-success">Update Hero</button>
-                        <button type="button" onclick="cancelEditHero()" class="shadow btn btn-outline-primary">
-                            Cancel
-                        </button>
-                        <a href="/heros" class="shadow btn btn-outline-danger">Back to Hero</a>
+                        <a href="/heros" class="shadow btn btn-outline-danger">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -131,7 +121,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
-    <script src="/js/custom.js"></script>
     <script>
         var loadFile = function(event) {
             $("#originalPhoto").show();

@@ -6,18 +6,17 @@ import ca.lichangzhang.SuperheroSighting.dto.Hero;
 import ca.lichangzhang.SuperheroSighting.dto.Location;
 import ca.lichangzhang.SuperheroSighting.dto.Organization;
 import ca.lichangzhang.SuperheroSighting.dto.Power;
-import java.sql.Blob;
+import ca.lichangzhang.SuperheroSighting.service.SuperHeroNullException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.stringtemplate.v4.*;
 
 /**
  * Email: xiaoyuzhang668@gmail.com Date: 2022
@@ -38,6 +37,8 @@ public class HeroDaoDB implements HeroDao {
     final String GET_ALL_HEROS = "SELECT * FROM hero ORDER BY heroId DESC";
     final String ADD_HERO = "INSERT INTO hero(name, isHero, description, photo, powerId) "
             + "VALUES(?,?,?,?,?)";
+    final String ADD_HERO_NO_POWER = "INSERT INTO hero(name, isHero, description, photo ) "
+            + "VALUES(?,?,?,?)";
     final String INSERT_HERO_ORGANIZATION = "INSERT INTO "
             + "hero_organization(heroId, organizationId) VALUES(?,?)";
     final String UPDATE_HERO = "UPDATE hero SET name = ?, isHero = ?, description = ?, "
@@ -104,14 +105,23 @@ public class HeroDaoDB implements HeroDao {
 
     @Override
     @Transactional
-    public Hero addHero(Hero hero) {
+    public Hero addHero(Hero hero) throws SuperHeroNullException {
 
+    if (hero.getPower() == null) {
+        jdbc.update(ADD_HERO_NO_POWER,
+                hero.getName(),
+                hero.getIsHero(),
+                hero.getDescription(),
+                hero.getPhoto());
+        }
+        else {
         jdbc.update(ADD_HERO,
                 hero.getName(),
                 hero.getIsHero(),
                 hero.getDescription(),
                 hero.getPhoto(),
                 hero.getPower().getPowerId());
+        }
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         hero.setHeroId(newId);

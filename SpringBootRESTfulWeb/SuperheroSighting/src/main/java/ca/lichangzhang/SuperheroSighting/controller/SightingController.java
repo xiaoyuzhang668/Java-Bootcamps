@@ -6,14 +6,14 @@ import ca.lichangzhang.SuperheroSighting.dto.Sighting;
 import ca.lichangzhang.SuperheroSighting.service.HeroService;
 import ca.lichangzhang.SuperheroSighting.service.SuperHeroNullException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,8 +21,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Email: xiaoyuzhang668@gmail.com Date: 2022
@@ -43,9 +41,8 @@ public class SightingController {
 
         List<Sighting> sightings = heroService.getAllSightings();
         List<Hero> heros = heroService.getAllHeros();
-
-        model.addAttribute("sightings", sightings);
         model.addAttribute("heros", heros);
+        model.addAttribute("sightings", sightings);
 
         return "sightings";
     }
@@ -68,30 +65,43 @@ public class SightingController {
             @Valid @ModelAttribute("sighting") Sighting sighting,
             BindingResult result,
             Model model,
-            HttpServletRequest request) throws SuperHeroNullException {
+            int heroId,
+            int locationId,
+            HttpServletRequest request) {
 
-        String heroId = request.getParameter("heroId");
-        String locationId = request.getParameter("locationId");
         String sightingDate = request.getParameter("sightingDate");
 
-        if (heroId != "0") {
-            sighting.setHero(heroService.getHeroById(Integer.parseInt(heroId)));
-        } else {  
-            FieldError error = new FieldError("sighting", "hero", "Hero must not be empty.");
+        if (heroId != 0) {
+            sighting.setHero(heroService.getHeroById(heroId));
+        } else {
+            FieldError error = new FieldError("sighting", "hero", "Hero name must not be empty.");
             result.addError(error);
         }
 
-        if ( locationId != "0") {
-            sighting.setLocation(heroService.getLocationById(Integer.parseInt(locationId)));
-        } else {               
-            FieldError error = new FieldError("sighting", "location", "Location must not be empty.");
+        if (locationId != 0) {
+            sighting.setLocation(heroService.getLocationById(locationId));
+        } else {
+            FieldError error = new FieldError("sighting", "location", "Location name must not be empty.");
             result.addError(error);
+        }
+
+        if (sightingDate != null && !sightingDate.isBlank()) {
+            LocalDateTime sightingD = sighting.getFormatted();
+            LocalDateTime currentTime = LocalDateTime.now();
+            long diff = ChronoUnit.MINUTES.between(currentTime, sightingD);
+            if (diff > 0) {
+                FieldError error = new FieldError("sighting", "sightingDate", "Sighting date must not be in the future time.");
+                result.addError(error);
+            }
         }
 
         if (result.hasErrors()) {
 
-            model.addAttribute("locations", heroService.getAllLocations());
+            List<Hero> heros = heroService.getAllHeros();
+            List<Location> locations = heroService.getAllLocations();
+
             model.addAttribute("heros", heroService.getAllHeros());
+            model.addAttribute("locations", heroService.getAllLocations());
             model.addAttribute("sighting", sighting);
 
             return "sightings/addSighting";
@@ -103,7 +113,9 @@ public class SightingController {
     }
 
     @GetMapping("sightings/sightingDetail")
-    public String sightingDetail(Integer sightingId, Model model) {
+    public String sightingDetail(
+            Integer sightingId,
+            Model model) {
 
         Sighting sighting = heroService.getSightingById(sightingId);
         model.addAttribute("sighting", sighting);
@@ -112,7 +124,9 @@ public class SightingController {
     }
 
     @GetMapping("sightings/editSighting")
-    public String editSighting(Integer sightingId, Model model) {
+    public String editSighting(
+            Integer sightingId,
+            Model model) {
 
         Sighting sighting = heroService.getSightingById(sightingId);
         List<Hero> heros = heroService.getAllHeros();
@@ -130,13 +144,25 @@ public class SightingController {
             @Valid @ModelAttribute("sighting") Sighting sighting,
             BindingResult result,
             Model model,
-            HttpServletRequest request) throws SuperHeroNullException {
+            HttpServletRequest request)
+            throws SuperHeroNullException {
 
         String heroId = request.getParameter("heroId");
         String locationId = request.getParameter("locationId");
+        String sightingDate = request.getParameter("sightingDate");
 
         sighting.setHero(heroService.getHeroById(Integer.parseInt(heroId)));
         sighting.setLocation(heroService.getLocationById(Integer.parseInt(locationId)));
+
+        if (sightingDate != null && !sightingDate.isBlank()) {
+            LocalDateTime sightingD = sighting.getFormatted();
+            LocalDateTime currentTime = LocalDateTime.now();
+            long diff = ChronoUnit.MINUTES.between(currentTime, sightingD);
+            if (diff > 0) {
+                FieldError error = new FieldError("sighting", "sightingDate", "Sighting date must not be in the future time.");
+                result.addError(error);
+            }
+        }
 
         if (result.hasErrors()) {
 
@@ -162,15 +188,11 @@ public class SightingController {
 
         if (sightingDateForSearch == null) {
             sightings = heroService.getAllSightings();
-
-            model.addAttribute("sightings", sightings);
-            return "sightings";
         } else {
             sightings = heroService.getSightingForDate(LocalDate.parse(sightingDateForSearch, formatter2));
-
-            model.addAttribute("sightings", sightings);
-            return "sightings/searchSightingByDate";
         }
+        model.addAttribute("sightings", sightings);
+        return "sightings/searchSightingByDate";
     }
 
     @GetMapping("sightings/searchSightingByHero")
@@ -183,15 +205,13 @@ public class SightingController {
 
         if (heroIdForSearch == 0) {
             sightings = heroService.getAllSightings();
-
-            model.addAttribute("sightings", sightings);
-            return "sightings";
         } else {
             sightings = heroService.getSightingForHero(heroIdForSearch);
-
-            model.addAttribute("sightings", sightings);
-            return "sightings/searchSightingByHero";
         }
+
+        model.addAttribute("sightings", sightings);
+
+        return "sightings/searchSightingByHero";
     }
 
     @GetMapping("deleteSighting")

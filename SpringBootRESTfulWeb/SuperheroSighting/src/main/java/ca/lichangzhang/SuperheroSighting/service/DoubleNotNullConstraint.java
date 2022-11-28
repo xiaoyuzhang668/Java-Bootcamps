@@ -22,7 +22,7 @@ import javax.validation.ReportAsSingleViolation;
 
 public @interface DoubleNotNullConstraint {
 
-     String message() default "Value should not be empty";
+    String message() default "Value should not be empty";
 
     String messageNumeric() default "Value should be all numeric.";
     

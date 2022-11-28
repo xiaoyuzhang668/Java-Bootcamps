@@ -23,23 +23,20 @@ public class Hero {
     private Boolean isHero;
 
     @NotBlank(message = "Hero name must not be blank")
-    @Size(max = 255, message = "Hero description must be fewer than 255 characters")
+    @Size(max = 255, message = "Hero description must be fewer than 255 characters.")
     private String description;
 
     private Power power;
-
     private byte[] photo;
     private List<Organization> organizations;
 
-    public Hero(){
-        
+    public Hero() {
     }
-                //set orderNumber readonly
-    public Hero(int heroId) {
+
+     public Hero(int heroId) {
         this.heroId = heroId;
     }
-    
-    
+     
     public int getHeroId() {
         return heroId;
     }
@@ -102,18 +99,18 @@ public class Hero {
             tempPhoto = "data:image/jpeg;base64," + Base64.getMimeEncoder().encodeToString(this.getPhoto());
         }
         return tempPhoto;
-    }   
+    }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + this.heroId;
-        hash = 37 * hash + Objects.hashCode(this.name);
-        hash = 37 * hash + Objects.hashCode(this.isHero);
-        hash = 37 * hash + Objects.hashCode(this.description);
-        hash = 37 * hash + Objects.hashCode(this.power);
-        hash = 37 * hash + Arrays.hashCode(this.photo);
-        hash = 37 * hash + Objects.hashCode(this.organizations);
+        int hash = 5;
+        hash = 43 * hash + this.heroId;
+        hash = 43 * hash + Objects.hashCode(this.name);
+        hash = 43 * hash + Objects.hashCode(this.isHero);
+        hash = 43 * hash + Objects.hashCode(this.description);
+        hash = 43 * hash + Objects.hashCode(this.power);
+        hash = 43 * hash + Arrays.hashCode(this.photo);
+        hash = 43 * hash + Objects.hashCode(this.organizations);
         return hash;
     }
 
@@ -151,10 +148,5 @@ public class Hero {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Hero{" + "heroId=" + heroId + ", name=" + name + ", isHero=" + isHero + ", description=" + description + ", power=" + power + ", photo=" + photo + ", organizations=" + organizations + '}';
     }
 }

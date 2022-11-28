@@ -29,7 +29,6 @@ public class OrganizationDaoDB implements OrganizationDao {
             + "VALUES(?, ?, ?, ?, ?)";
     final String UPDATE_ORGANIZATION = "UPDATE organization SET name = ?, description = ?, "
             + "address = ?, contact = ?, phone = ? WHERE organizationId = ?";
-
     final String DELETE_HERO_ORGANIZATION = "DELETE FROM hero_organization WHERE organizationId = ?";
     final String DELETE_ORGANIZATON = "DELETE FROM organization WHERE organizationId = ?";
     final String GET_ORGANIZATION_FOR_HERO = "SELECT O.* FROM organization AS O  "
@@ -65,6 +64,7 @@ public class OrganizationDaoDB implements OrganizationDao {
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         organization.setOrganizationId(newId);
+        
         return organization;
     }
 
@@ -94,6 +94,7 @@ public class OrganizationDaoDB implements OrganizationDao {
 
         List<Organization> organizations = jdbc.query(GET_ORGANIZATION_FOR_HERO,
                 new OrganizationMapper(), hero.getHeroId());
+        
         return organizations;
     }
 

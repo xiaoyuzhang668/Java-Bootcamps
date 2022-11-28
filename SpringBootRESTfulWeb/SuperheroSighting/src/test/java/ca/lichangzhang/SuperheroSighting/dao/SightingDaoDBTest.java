@@ -10,6 +10,7 @@ import ca.lichangzhang.SuperheroSighting.dto.Location;
 import ca.lichangzhang.SuperheroSighting.dto.Organization;
 import ca.lichangzhang.SuperheroSighting.dto.Power;
 import ca.lichangzhang.SuperheroSighting.dto.Sighting;
+import ca.lichangzhang.SuperheroSighting.service.SuperHeroNullException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class SightingDaoDBTest {
      * Test of getSightingById method, of class SightingDaoDB.
      */
     @Test
-    public void testAddAndGetSighting() {
+    public void testAddAndGetSighting() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -127,7 +128,7 @@ public class SightingDaoDBTest {
      * Test of getAllSightings method, of class SightingDaoDB.
      */
     @Test
-    public void testGetAllSightings() {
+    public void testGetAllSightings() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -199,7 +200,7 @@ public class SightingDaoDBTest {
      * Test of updateSighting method, of class SightingDaoDB.
      */
     @Test
-    public void testUpdateSighting() {
+    public void testUpdateSighting() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -260,7 +261,7 @@ public class SightingDaoDBTest {
 //     */
 
     @Test
-    public void testDeleteSightingById() {
+    public void testDeleteSightingById() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -316,7 +317,7 @@ public class SightingDaoDBTest {
      * Test of getSightingForDate method, of class SightingDaoDB.
      */
     @Test
-    public void testGetSightingForDate() {
+    public void testGetSightingForDate() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");
@@ -367,7 +368,7 @@ public class SightingDaoDBTest {
     }
 
     @Test
-    public void testGetSightingForHero() {
+    public void testGetSightingForHero() throws SuperHeroNullException {
 
         Power power = new Power();
         power.setName("Test Superpower Name");

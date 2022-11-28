@@ -81,7 +81,8 @@ a:active {
 }
 
 /*placeholder*/
-::placeholder {
+::placeholder,
+.placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
     /*		color: red !important;*/
     opacity: 0.5 !important;
@@ -89,7 +90,8 @@ a:active {
     /* Firefox */
 }
 
-:-ms-input-placeholder {
+:-ms-input-placeholder,
+.placeholder {
     /* Internet Explorer 10-11 */
     opacity: 0.5 !important;
     font-style: italic;

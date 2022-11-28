@@ -2,13 +2,9 @@ package ca.lichangzhang.SuperheroSighting.controller;
 
 import ca.lichangzhang.SuperheroSighting.dto.Hero;
 import ca.lichangzhang.SuperheroSighting.dto.Organization;
-import ca.lichangzhang.SuperheroSighting.dto.Power;
 import ca.lichangzhang.SuperheroSighting.service.HeroService;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +28,6 @@ public class OrganizationController {
     public String displayOrganizations(Model model) {
 
         List<Organization> organizations = heroService.getAllOrganizations();
-
         model.addAttribute("organizations", organizations);
 
         return "organizations";
@@ -80,11 +75,14 @@ public class OrganizationController {
     public String deleteOrganization(Integer organizationId) {
         
         heroService.deleteOrganizationById(organizationId);
+        
         return "redirect:/organizations";
     }
 
     @GetMapping("organizations/editOrganization")
-    public String editStudent(Integer organizationId, Model model) {
+    public String editStudent(
+            Integer organizationId, 
+            Model model) {
         
         Organization organization = heroService.getOrganizationById(organizationId);
         model.addAttribute("organization", organization);
@@ -95,8 +93,7 @@ public class OrganizationController {
     @PostMapping("organizations/editOrganization")
     public String performEditOrganization(
             @Valid Organization organization, 
-            BindingResult result, 
-            Model model) {
+            BindingResult result) {
         
          if (result.hasErrors()) {
             return "organizations/editOrganization";
@@ -107,10 +104,14 @@ public class OrganizationController {
     }
 
     @GetMapping("organizations/organizationDetail")
-    public String organizationDetail(Integer organizationId, Model model) {
+    public String organizationDetail(
+            Integer organizationId, 
+            Model model) {
 
-        Organization organization = heroService.getOrganizationById(organizationId); 
+        Organization organization = heroService.getOrganizationById(organizationId);         
+        List<Hero> heros = heroService.getHeroForOrganization(new Organization(organizationId));
         model.addAttribute("organization", organization);
+        model.addAttribute("heros", heros);
         
         return "organizations/organizationDetail";
     }

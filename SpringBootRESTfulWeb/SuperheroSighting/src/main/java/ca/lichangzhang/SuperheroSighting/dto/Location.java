@@ -29,26 +29,26 @@ public class Location {
     private String address;
 
     @Size(max = 11, message = "Location phone must be less than 11 characters.")
-    @Pattern(regexp = "^(0|[1-9][0-9]*|)$", message = "Location phone must be all numeric.") 
+    @Pattern(regexp = "^(0|[1-9][0-9]*|)$", message = "Location phone must be all numeric and does not begin with zero.")
     private String phone;
 
     @DoubleNotNullConstraint(notEmpty = true, min = 1, max = 16,
-            message = "Location Latitude must not be empty.", messageLength = " Location Latitude should be less than 16 characters.", 
+            message = "Location Latitude must not be empty.", messageLength = " Location Latitude should be less than 16 characters.",
             messageNumeric = " Location Latitude number should be all numeric.")
     private String latitude;
 
     @DoubleNotNullConstraint(notEmpty = true, min = 1, max = 16,
-            message = "Location longitude must not be empty.", messageLength = " Location longitude should be less than 16 characters.", 
+            message = "Location longitude must not be empty.", messageLength = " Location longitude should be less than 16 characters.",
             messageNumeric = " Location longitude number should be all numeric.")
     private String longitude;
 
     public Location() {
-        
     }
-        public Location(int locationId) {
+
+    public Location(int locationId) {
         this.locationId = locationId;
     }
-        
+
     public int getLocationId() {
         return locationId;
     }

@@ -3,6 +3,7 @@ package ca.lichangzhang.SuperheroSighting.dao;
 import ca.lichangzhang.SuperheroSighting.dto.Hero;
 import ca.lichangzhang.SuperheroSighting.dto.Location;
 import ca.lichangzhang.SuperheroSighting.dto.Organization;
+import ca.lichangzhang.SuperheroSighting.service.SuperHeroNullException;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface HeroDao {
 
     List<Hero> getAllHeros();
 
-    Hero addHero(Hero hero);
+    Hero addHero(Hero hero) throws SuperHeroNullException;
 
     void updateHero(Hero hero);
 

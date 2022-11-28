@@ -33,7 +33,7 @@ CREATE TABLE location (
 CREATE TABLE sighting (
 	sightingId INT PRIMARY KEY AUTO_INCREMENT,
     heroId INT NOT NULL,
-    locationId INT,
+    locationId INT NOT NULL,
 	description VARCHAR(255) NOT NULL,
     sightingDate DATETIME NOT NULL,
     FOREIGN KEY (heroId) REFERENCES hero(heroId),

@@ -1,32 +1,17 @@
 package ca.lichangzhang.SuperheroSighting.controller;
 
-import ca.lichangzhang.SuperheroSighting.dao.HeroDao;
-import ca.lichangzhang.SuperheroSighting.dao.LocationDao;
-import ca.lichangzhang.SuperheroSighting.dao.OrganizationDao;
-import ca.lichangzhang.SuperheroSighting.dao.PowerDao;
-import ca.lichangzhang.SuperheroSighting.dao.SightingDao;
 import ca.lichangzhang.SuperheroSighting.dto.Hero;
 import ca.lichangzhang.SuperheroSighting.dto.Location;
-import ca.lichangzhang.SuperheroSighting.dto.Organization;
-import ca.lichangzhang.SuperheroSighting.dto.Power;
 import ca.lichangzhang.SuperheroSighting.service.HeroService;
-import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Email: xiaoyuzhang668@gmail.com Date: 2022
@@ -134,10 +119,14 @@ public class LocationController {
     }
 
     @GetMapping("locations/locationDetail")
-    public String locationDetail(Integer locationId, Model model) {
+    public String locationDetail(
+            Integer locationId, 
+            Model model) {
 
         Location location = heroService.getLocationById(locationId);
+        List<Hero> heros = heroService.getHeroForLocation(new Location(locationId));
         model.addAttribute("location", location);
+        model.addAttribute("heros", heros);
         
         return "locations/locationDetail";
     }
