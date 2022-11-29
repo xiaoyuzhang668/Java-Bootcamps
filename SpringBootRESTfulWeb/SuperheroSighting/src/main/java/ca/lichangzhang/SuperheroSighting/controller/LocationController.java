@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -64,6 +65,14 @@ public class LocationController {
 
         model.addAttribute("location", location);
 
+        List<Location> locationLists = heroService.getAllLocations();
+        for (Location locationList : locationLists) {
+            if (name.toLowerCase().equals(locationList.getName().toLowerCase())) {
+                FieldError error = new FieldError("location", "name", "Location name must not be duplicate.");
+                result.addError(error);
+            }
+        }
+
         if (result.hasErrors()) {
             return "locations/addLocation";
         }
@@ -94,10 +103,19 @@ public class LocationController {
 
     @PostMapping("locations/editLocation")
     public String performEditLocation(
-            @Valid Location location, 
-            BindingResult result, 
-            Model model, 
+            @Valid Location location,
+            BindingResult result,
+            Model model,
             HttpServletRequest request) {
+        
+        String name = request.getParameter("name");
+        List<Location> locationLists = heroService.getAllLocations();
+        for (Location locationList : locationLists) {
+            if ((locationList.getLocationId() != location.getLocationId() ) && (name.toLowerCase().equals(locationList.getName().toLowerCase()))) {
+                FieldError error = new FieldError("location", "name", "Location name must not be duplicate.");
+                result.addError(error);
+            }
+        }
 
         if (result.hasErrors()) {
             return "locations/editLocation";
@@ -120,14 +138,14 @@ public class LocationController {
 
     @GetMapping("locations/locationDetail")
     public String locationDetail(
-            Integer locationId, 
+            Integer locationId,
             Model model) {
 
         Location location = heroService.getLocationById(locationId);
         List<Hero> heros = heroService.getHeroForLocation(new Location(locationId));
         model.addAttribute("location", location);
         model.addAttribute("heros", heros);
-        
+
         return "locations/locationDetail";
     }
 }

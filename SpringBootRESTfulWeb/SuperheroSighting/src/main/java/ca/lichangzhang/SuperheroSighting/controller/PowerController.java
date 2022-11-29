@@ -1,5 +1,6 @@
 package ca.lichangzhang.SuperheroSighting.controller;
 
+import ca.lichangzhang.SuperheroSighting.dto.Organization;
 import ca.lichangzhang.SuperheroSighting.dto.Power;
 import ca.lichangzhang.SuperheroSighting.service.HeroService;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -28,7 +30,6 @@ public class PowerController {
 
         List<Power> powers = heroService.getAllPowers();
         model.addAttribute("powers", powers);
-
         return "powers";
     }
 
@@ -36,7 +37,6 @@ public class PowerController {
     public String displayAddPowers(Model model) {
 
         model.addAttribute("power", new Power());
-        
         return "powers/addPower";
     }
 
@@ -55,6 +55,14 @@ public class PowerController {
 
         model.addAttribute("power", power);
 
+        List<Power> powerLists = heroService.getAllPowers();
+        for (Power powerList : powerLists) {
+            if (name.toLowerCase().equals(powerList.getName().toLowerCase())) {
+                FieldError error = new FieldError("power", "name", "Power name must not be duplicate.");
+                result.addError(error);
+            }
+        }
+
         if (result.hasErrors()) {
             return "powers/addPower";
         }
@@ -68,38 +76,48 @@ public class PowerController {
     public String deletePower(Integer powerId) {
 
         heroService.deletePowerById(powerId);
-        
+
         return "redirect:/powers";
     }
 
     @GetMapping("powers/editPower")
     public String editPower(
-            Integer powerId, 
+            Integer powerId,
             Model model) {
 
         Power power = heroService.getPowerById(powerId);
         model.addAttribute("power", power);
- 
+
         return "powers/editPower";
     }
 
     @PostMapping("powers/editPower")
     public String performEditPower(
-            @Valid Power power, 
+            @Valid Power power,
+            HttpServletRequest request,
             BindingResult result) {
 
-          if (result.hasErrors()) {
+        List<Power> powerLists = heroService.getAllPowers();
+        String name = request.getParameter("name");
+        for (Power powerList : powerLists) {
+            if ((powerList.getPowerId() != power.getPowerId() ) && (name.toLowerCase().equals(powerList.getName().toLowerCase()))) {
+                FieldError error = new FieldError("power", "name", "Power name must not be duplicate.");
+                result.addError(error);
+            }
+        }
+
+        if (result.hasErrors()) {
             return "powers/editPower";
         }
-        
+
         heroService.updatePower(power);
-        
+
         return "redirect:/powers";
     }
 
     @GetMapping("powers/powerDetail")
     public String powerDetail(
-            Integer powerId, 
+            Integer powerId,
             Model model) {
 
         Power power = heroService.getPowerById(powerId);

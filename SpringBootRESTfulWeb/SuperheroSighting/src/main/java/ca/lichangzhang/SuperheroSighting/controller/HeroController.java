@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,6 +72,14 @@ public class HeroController {
             existingE = true;
         }
 
+        List<Hero> heroLists = heroService.getAllHeros();
+        for (Hero heroList : heroLists) {
+            if (name.toLowerCase().equals(heroList.getName().toLowerCase())) {
+                model.addAttribute("heroNameMessage", "Hero name must not be duplicate.");
+                existingE = true;
+            }
+        }
+
         if (description == null || description.length() == 0 || description == "") {
             model.addAttribute("heroDescriptionMessage", "Hero description must not be empty.");
             existingE = true;
@@ -83,7 +90,6 @@ public class HeroController {
         }
 
         String[] organizationIds = request.getParameterValues("organizationId");
-
         List<Organization> organizations = new ArrayList<>();
         if (organizationIds != null) {
             for (String organizationId : organizationIds) {
@@ -122,7 +128,7 @@ public class HeroController {
 
     @GetMapping("heros/heroDetail")
     public String heroDetail(
-            Integer heroId, 
+            Integer heroId,
             Model model) {
 
         Hero hero = heroService.getHeroById(heroId);
@@ -144,7 +150,9 @@ public class HeroController {
     }
 
     @GetMapping("heros/editHero")
-    public String editHero(Integer heroId, Model model) {
+    public String editHero(
+            Integer heroId, 
+            Model model) {
 
         Hero hero = heroService.getHeroById(heroId);
         List<Power> powers = heroService.getAllPowers();
@@ -176,6 +184,14 @@ public class HeroController {
         if (name == null || name.length() == 0 || name == "") {
             model.addAttribute("heroNameMessage", "Hero name must not be empty.");
             existingE = true;
+        }
+
+        List<Hero> heroLists = heroService.getAllHeros();
+        for (Hero heroList : heroLists) {
+            if  ((heroList.getHeroId() != hero.getHeroId()) &&  (name.toLowerCase().equals(heroList.getName().toLowerCase())) ){
+                model.addAttribute("heroNameMessage", "Hero name must not be duplicate.");
+                existingE = true;
+            }
         }
 
         if (description == null || description.length() == 0 || description == "") {
@@ -222,7 +238,7 @@ public class HeroController {
 
             model.addAttribute("powers", powers);
             model.addAttribute("organizations", allOrganizations);
-            model.addAttribute("hero", new Hero());
+            model.addAttribute("hero", hero);
             return "heros/editHero";
         }
 

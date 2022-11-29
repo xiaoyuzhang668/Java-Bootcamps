@@ -107,20 +107,19 @@ public class HeroDaoDB implements HeroDao {
     @Transactional
     public Hero addHero(Hero hero) throws SuperHeroNullException {
 
-    if (hero.getPower() == null) {
-        jdbc.update(ADD_HERO_NO_POWER,
-                hero.getName(),
-                hero.getIsHero(),
-                hero.getDescription(),
-                hero.getPhoto());
-        }
-        else {
-        jdbc.update(ADD_HERO,
-                hero.getName(),
-                hero.getIsHero(),
-                hero.getDescription(),
-                hero.getPhoto(),
-                hero.getPower().getPowerId());
+        if (hero.getPower() == null) {
+            jdbc.update(ADD_HERO_NO_POWER,
+                    hero.getName(),
+                    hero.getIsHero(),
+                    hero.getDescription(),
+                    hero.getPhoto());
+        } else {
+            jdbc.update(ADD_HERO,
+                    hero.getName(),
+                    hero.getIsHero(),
+                    hero.getDescription(),
+                    hero.getPhoto(),
+                    hero.getPower().getPowerId());
         }
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
@@ -142,12 +141,20 @@ public class HeroDaoDB implements HeroDao {
     @Transactional
     public void updateHero(Hero hero) {
 
+        int powerId;
+
+        if (hero.getPower() == null) {
+            powerId = 0;
+        } else {
+            powerId = hero.getPower().getPowerId();
+        }
+
         jdbc.update(UPDATE_HERO,
                 hero.getName(),
                 hero.getIsHero(),
                 hero.getDescription(),
                 hero.getPhoto(),
-                hero.getPower().getPowerId(),
+                powerId,
                 hero.getHeroId());
 
         jdbc.update(DELETE_FROM_HERO_ORGANIZATION, hero.getHeroId());
@@ -158,11 +165,19 @@ public class HeroDaoDB implements HeroDao {
     @Transactional
     public void updateHeroNoImage(Hero hero) {
 
+        int powerId;
+
+        if (hero.getPower() == null) {
+            powerId = 0;
+        } else {
+            powerId = hero.getPower().getPowerId();
+        }
+
         jdbc.update(UPDATE_HERO_NO_IMAGE,
                 hero.getName(),
                 hero.getIsHero(),
                 hero.getDescription(),
-                hero.getPower().getPowerId(),
+                powerId,
                 hero.getHeroId());
 
         jdbc.update(DELETE_FROM_HERO_ORGANIZATION, hero.getHeroId());

@@ -1,6 +1,7 @@
 package ca.lichangzhang.SuperheroSighting.controller;
 
 import ca.lichangzhang.SuperheroSighting.dto.Hero;
+import ca.lichangzhang.SuperheroSighting.dto.Location;
 import ca.lichangzhang.SuperheroSighting.dto.Organization;
 import ca.lichangzhang.SuperheroSighting.service.HeroService;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -29,7 +31,6 @@ public class OrganizationController {
 
         List<Organization> organizations = heroService.getAllOrganizations();
         model.addAttribute("organizations", organizations);
-
         return "organizations";
     }
 
@@ -37,7 +38,6 @@ public class OrganizationController {
     public String displayAddOrganizations(Model model) {
 
         model.addAttribute("organization", new Organization());
-
         return "organizations/addOrganization";
     }
 
@@ -62,6 +62,14 @@ public class OrganizationController {
 
         model.addAttribute("organizatioin", organization);
 
+        List<Organization> organizationLists = heroService.getAllOrganizations();
+        for (Organization organizationList : organizationLists) {
+            if (name.toLowerCase().equals(organizationList.getName().toLowerCase())) {
+                FieldError error = new FieldError("organization", "name", "Organization name must not be duplicate.");
+                result.addError(error);
+            }
+        }
+
         if (result.hasErrors()) {
             return "organizations/addOrganization";
         }
@@ -73,46 +81,54 @@ public class OrganizationController {
 
     @GetMapping("deleteOrganization")
     public String deleteOrganization(Integer organizationId) {
-        
+
         heroService.deleteOrganizationById(organizationId);
-        
         return "redirect:/organizations";
     }
 
     @GetMapping("organizations/editOrganization")
     public String editStudent(
-            Integer organizationId, 
+            Integer organizationId,
             Model model) {
-        
+
         Organization organization = heroService.getOrganizationById(organizationId);
         model.addAttribute("organization", organization);
-        
         return "organizations/editOrganization";
     }
 
     @PostMapping("organizations/editOrganization")
     public String performEditOrganization(
-            @Valid Organization organization, 
+            @Valid Organization organization,
+            HttpServletRequest request,
             BindingResult result) {
-        
-         if (result.hasErrors()) {
+
+        String name = request.getParameter("name");
+        List<Organization> organizationLists = heroService.getAllOrganizations();
+        for (Organization organizationList : organizationLists) {
+            if ((organizationList.getOrganizationId() != organization.getOrganizationId() ) && (name.toLowerCase().equals(organizationList.getName().toLowerCase()))) {
+                FieldError error = new FieldError("organization", "name", "Organization name must not be duplicate.");
+                result.addError(error);
+            }
+        }
+
+        if (result.hasErrors()) {
             return "organizations/editOrganization";
         }
-         
-        heroService.updateOrganization(organization);        
+
+        heroService.updateOrganization(organization);
         return "redirect:/organizations";
     }
 
     @GetMapping("organizations/organizationDetail")
     public String organizationDetail(
-            Integer organizationId, 
+            Integer organizationId,
             Model model) {
 
-        Organization organization = heroService.getOrganizationById(organizationId);         
+        Organization organization = heroService.getOrganizationById(organizationId);
         List<Hero> heros = heroService.getHeroForOrganization(new Organization(organizationId));
         model.addAttribute("organization", organization);
         model.addAttribute("heros", heros);
-        
+
         return "organizations/organizationDetail";
     }
 }
