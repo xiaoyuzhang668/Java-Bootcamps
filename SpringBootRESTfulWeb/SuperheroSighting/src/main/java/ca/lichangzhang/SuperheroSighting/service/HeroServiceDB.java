@@ -41,8 +41,8 @@ public class HeroServiceDB implements HeroService {
     @Autowired
     SightingDao sightingDao;
 
-   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 //    HERO
     @Override
     public Hero getHeroById(int heroId) {
@@ -56,12 +56,7 @@ public class HeroServiceDB implements HeroService {
 
     @Override
     public Hero addHero(Hero hero) {
-        try {
-             heroDao.addHero(hero);
-        } catch (SuperHeroNullException ex) {
-            Logger.getLogger(HeroServiceDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return hero;
+        return heroDao.addHero(hero);
     }
 
     @Override
@@ -194,12 +189,12 @@ public class HeroServiceDB implements HeroService {
     }
 
     @Override
-    public Sighting addSighting(Sighting sighting)  {  
+    public Sighting addSighting(Sighting sighting) {
         return sightingDao.addSighting(sighting);
     }
 
     @Override
-    public void updateSighting(Sighting sighting)  {       
+    public void updateSighting(Sighting sighting) {
         sightingDao.updateSighting(sighting);
     }
 

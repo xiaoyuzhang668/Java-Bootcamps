@@ -37,12 +37,14 @@ public class HeroDaoDB implements HeroDao {
     final String GET_ALL_HEROS = "SELECT * FROM hero ORDER BY heroId DESC";
     final String ADD_HERO = "INSERT INTO hero(name, isHero, description, photo, powerId) "
             + "VALUES(?,?,?,?,?)";
-    final String ADD_HERO_NO_POWER = "INSERT INTO hero(name, isHero, description, photo ) "
-            + "VALUES(?,?,?,?)";
+    final String ADD_HERO_NO_POWER = "INSERT INTO hero(name, isHero, description, photo, powerId ) "
+            + "VALUES(?,?,?,?,0)";
     final String INSERT_HERO_ORGANIZATION = "INSERT INTO "
             + "hero_organization(heroId, organizationId) VALUES(?,?)";
     final String UPDATE_HERO = "UPDATE hero SET name = ?, isHero = ?, description = ?, "
             + "photo = ?, powerId = ? WHERE heroId = ?";
+    final String UPDATE_HERO_No_POWER = "UPDATE hero SET name = ?, isHero = ?, description = ?, "
+            + "photo = ? WHERE heroId = ?";
     final String UPDATE_HERO_NO_IMAGE = "UPDATE hero SET name = ?, isHero = ?, description = ?, "
             + " powerId = ? WHERE heroId = ?";
     final String DELETE_FROM_SIGHTING = "DELETE FROM sighting WHERE heroId = ?";
@@ -105,7 +107,7 @@ public class HeroDaoDB implements HeroDao {
 
     @Override
     @Transactional
-    public Hero addHero(Hero hero) throws SuperHeroNullException {
+    public Hero addHero(Hero hero) {
 
         if (hero.getPower() == null) {
             jdbc.update(ADD_HERO_NO_POWER,
@@ -142,11 +144,10 @@ public class HeroDaoDB implements HeroDao {
     public void updateHero(Hero hero) {
 
         int powerId;
-
-        if (hero.getPower() == null) {
-            powerId = 0;
-        } else {
+        if (hero.getPower() != null) {
             powerId = hero.getPower().getPowerId();
+        } else {
+            powerId = 0;
         }
 
         jdbc.update(UPDATE_HERO,
@@ -166,11 +167,10 @@ public class HeroDaoDB implements HeroDao {
     public void updateHeroNoImage(Hero hero) {
 
         int powerId;
-
-        if (hero.getPower() == null) {
-            powerId = 0;
-        } else {
+        if (hero.getPower() != null) {
             powerId = hero.getPower().getPowerId();
+        } else {
+            powerId = 0;
         }
 
         jdbc.update(UPDATE_HERO_NO_IMAGE,

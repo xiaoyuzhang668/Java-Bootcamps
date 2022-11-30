@@ -72,16 +72,26 @@ public class HeroController {
             existingE = true;
         }
 
+        if (name.length() > 100) {
+            model.addAttribute("heroNameMessage", "Hero name must be less than 100 characters.");
+            existingE = true;
+        }
+
         List<Hero> heroLists = heroService.getAllHeros();
         for (Hero heroList : heroLists) {
             if (name.toLowerCase().equals(heroList.getName().toLowerCase())) {
                 model.addAttribute("heroNameMessage", "Hero name must not be duplicate.");
                 existingE = true;
             }
-        }
+        }       
 
         if (description == null || description.length() == 0 || description == "") {
             model.addAttribute("heroDescriptionMessage", "Hero description must not be empty.");
+            existingE = true;
+        }
+        
+         if (description.length() > 255 ) {
+            model.addAttribute("heroDescriptionMessage", "Hero description must be fewer than 255 characters.");
             existingE = true;
         }
 
@@ -103,7 +113,7 @@ public class HeroController {
         hero.setOrganizations(organizations);
 
         if (file.getBytes().length > 125000) {
-            model.addAttribute("heroPhotoMessage", "Hero photo must not be bigger than 125000bytes.");
+            model.addAttribute("heroPhotoMessage", "Hero photo must be less than 125000bytes.");
             existingE = true;
         }
 
@@ -151,7 +161,7 @@ public class HeroController {
 
     @GetMapping("heros/editHero")
     public String editHero(
-            Integer heroId, 
+            Integer heroId,
             Model model) {
 
         Hero hero = heroService.getHeroById(heroId);
@@ -188,7 +198,7 @@ public class HeroController {
 
         List<Hero> heroLists = heroService.getAllHeros();
         for (Hero heroList : heroLists) {
-            if  ((heroList.getHeroId() != hero.getHeroId()) &&  (name.toLowerCase().equals(heroList.getName().toLowerCase())) ){
+            if ((heroList.getHeroId() != hero.getHeroId()) && (name.toLowerCase().equals(heroList.getName().toLowerCase()))) {
                 model.addAttribute("heroNameMessage", "Hero name must not be duplicate.");
                 existingE = true;
             }

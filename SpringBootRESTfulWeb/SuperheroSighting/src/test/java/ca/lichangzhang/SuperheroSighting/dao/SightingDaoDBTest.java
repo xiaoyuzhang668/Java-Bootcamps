@@ -80,11 +80,6 @@ public class SightingDaoDBTest {
     @Test
     public void testAddAndGetSighting() throws SuperHeroNullException {
 
-        Power power = new Power();
-        power.setName("Test Superpower Name");
-        power.setDescription("Test Superpower Description");
-        power = powerDao.addPower(power);
-
         Organization organization = new Organization();
         organization.setName("Test Organization Name");
         organization.setDescription("Test Organization Description");
@@ -100,7 +95,6 @@ public class SightingDaoDBTest {
         hero.setName("Test Superhero Name");
         hero.setIsHero(value);
         hero.setDescription("Test Superhero Description");
-        hero.setPower(power);
         hero.setOrganizations(organizations);
         hero = heroDao.addHero(hero);
 
@@ -130,11 +124,6 @@ public class SightingDaoDBTest {
     @Test
     public void testGetAllSightings() throws SuperHeroNullException {
 
-        Power power = new Power();
-        power.setName("Test Superpower Name");
-        power.setDescription("Test Superpower Description");
-        power = powerDao.addPower(power);
-
         Organization organization = new Organization();
         organization.setName("Test Organization Name");
         organization.setDescription("Test Organization Description");
@@ -150,7 +139,6 @@ public class SightingDaoDBTest {
         hero.setName("Test Superhero Name");
         hero.setIsHero(value);
         hero.setDescription("Test Superhero Description");
-        hero.setPower(power);
         hero.setOrganizations(organizations);
         hero = heroDao.addHero(hero);
 
@@ -158,7 +146,6 @@ public class SightingDaoDBTest {
         hero2.setName("Test Superhero Name 2");
         hero2.setIsHero(value);
         hero2.setDescription("Test Superhero Description 2");
-        hero2.setPower(power);
         hero2.setOrganizations(organizations);
         hero2 = heroDao.addHero(hero2);
 
@@ -202,11 +189,6 @@ public class SightingDaoDBTest {
     @Test
     public void testUpdateSighting() throws SuperHeroNullException {
 
-        Power power = new Power();
-        power.setName("Test Superpower Name");
-        power.setDescription("Test Superpower Description");
-        power = powerDao.addPower(power);
-
         Organization organization = new Organization();
         organization.setName("Test Organization Name");
         organization.setDescription("Test Organization Description");
@@ -222,7 +204,6 @@ public class SightingDaoDBTest {
         hero.setName("Test Superhero Name");
         hero.setIsHero(value);
         hero.setDescription("Test Superhero Description");
-        hero.setPower(power);
         hero.setOrganizations(organizations);
         hero = heroDao.addHero(hero);
 
@@ -263,11 +244,6 @@ public class SightingDaoDBTest {
     @Test
     public void testDeleteSightingById() throws SuperHeroNullException {
 
-        Power power = new Power();
-        power.setName("Test Superpower Name");
-        power.setDescription("Test Superpower Description");
-        power = powerDao.addPower(power);
-
         Organization organization = new Organization();
         organization.setName("Test Organization Name");
         organization.setDescription("Test Organization Description");
@@ -283,7 +259,6 @@ public class SightingDaoDBTest {
         hero.setName("Test Superhero Name");
         hero.setIsHero(value);
         hero.setDescription("Test Superhero Description");
-        hero.setPower(power);
         hero.setOrganizations(organizations);
         hero = heroDao.addHero(hero);
 
@@ -319,11 +294,6 @@ public class SightingDaoDBTest {
     @Test
     public void testGetSightingForDate() throws SuperHeroNullException {
 
-        Power power = new Power();
-        power.setName("Test Superpower Name");
-        power.setDescription("Test Superpower Description");
-        power = powerDao.addPower(power);
-
         Organization organization = new Organization();
         organization.setName("Test Organization Name");
         organization.setDescription("Test Organization Description");
@@ -339,7 +309,6 @@ public class SightingDaoDBTest {
         hero.setName("Test Superhero Name");
         hero.setIsHero(value);
         hero.setDescription("Test Superhero Description");
-        hero.setPower(power);
         hero.setOrganizations(organizations);
         hero = heroDao.addHero(hero);
 
@@ -370,11 +339,6 @@ public class SightingDaoDBTest {
     @Test
     public void testGetSightingForHero() throws SuperHeroNullException {
 
-        Power power = new Power();
-        power.setName("Test Superpower Name");
-        power.setDescription("Test Superpower Description");
-        power = powerDao.addPower(power);
-
         Organization organization = new Organization();
         organization.setName("Test Organization Name");
         organization.setDescription("Test Organization Description");
@@ -390,7 +354,6 @@ public class SightingDaoDBTest {
         hero.setName("Test Superhero Name");
         hero.setIsHero(value);
         hero.setDescription("Test Superhero Description");
-        hero.setPower(power);
         hero.setOrganizations(organizations);
         hero = heroDao.addHero(hero);
 
@@ -398,7 +361,6 @@ public class SightingDaoDBTest {
         hero2.setName("Test Superhero Name 2");
         hero2.setIsHero(value);
         hero2.setDescription("Test Superhero 2 Description");
-        hero2.setPower(power);
         hero2.setOrganizations(organizations);
         hero2 = heroDao.addHero(hero2);
 

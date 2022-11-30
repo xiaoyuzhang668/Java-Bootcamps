@@ -17,7 +17,7 @@ public interface HeroDao {
 
     List<Hero> getAllHeros();
 
-    Hero addHero(Hero hero) throws SuperHeroNullException;
+    Hero addHero(Hero hero);
 
     void updateHero(Hero hero);
 

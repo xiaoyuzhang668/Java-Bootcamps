@@ -41,9 +41,8 @@ public class SightingController {
 
         List<Sighting> sightings = heroService.getAllSightings();
         List<Hero> heros = heroService.getAllHeros();
-        model.addAttribute("heros", heros);
         model.addAttribute("sightings", sightings);
-
+        model.addAttribute("heros", heros);
         return "sightings";
     }
 

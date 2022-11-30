@@ -58,7 +58,6 @@ public class SightingDaoDB implements SightingDao {
 
             sighting.setHero(getHeroForSighting(sightingId));
             sighting.setLocation(getLocationForSighting(sightingId));
-
             return sighting;
         } catch (DataAccessException ex) {
             return null;
@@ -68,26 +67,12 @@ public class SightingDaoDB implements SightingDao {
     private Hero getHeroForSighting(int sightingId) {
 
         try {
-            Hero hero = jdbc.queryForObject(GET_HERO_FOR_SIGHTING, new HeroMapper(), sightingId);
-
-            Power power = getPowerForHero(hero.getHeroId());
-if(power != null){
-  hero.setPower(power);
-}
-           
+            Hero hero = jdbc.queryForObject(GET_HERO_FOR_SIGHTING, new HeroMapper(), sightingId);           
             hero.setOrganizations(getOrganizationsForHero(hero.getHeroId()));
-
             return hero;
         } catch (DataAccessException ex) {
             return null;
         }
-
-    }
-
-    private Power getPowerForHero(int heroId) {
-
-        return jdbc.queryForObject(GET_POWER_FOR_HERO, new PowerDaoDB.PowerMapper(),
-                heroId);
     }
 
     private List<Organization> getOrganizationsForHero(int heroId) {
