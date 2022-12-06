@@ -52,7 +52,7 @@
                         <tr th:each="sighting : ${sightings}">
                             <td th:text="${sighting.sightingId}">Sighting Id</td>
                             <td th:text="${sighting.hero.name}">Hero Name</td>
-                            <td th:text="${sighting.location.name}">Location Name</td>
+                            <td th:text="${sighting.location.name} ? ${sighting.location.name} : 'No Name'">Location Name</td>
                             <td th:text="${sighting.sightingDate}">Sighting Date</td>
                             <td class="align-middle"><a href="#" th:href="@{/sightings/sightingDetail(sightingId=${sighting.sightingId})}">Details</a></td>
                             <td class="align-middle"><a href="#" th:href="@{/sightings/editSighting(sightingId=${sighting.sightingId})}">Edit</a></td>
@@ -187,13 +187,11 @@
                 errorClass: "alert alert-danger",
                 rules: {
                     heroIdForSearch: {
-                        required: true,
                         notEqualTo: 0
                     },
                 },
                 messages: {
                     heroIdForSearch: {
-                        required: "Search by hero name must not be empty.",
                         notEqualTo: "Search by hero name must not be empty."
                     },
                 },

@@ -70,6 +70,11 @@ public class OrganizationController {
             }
         }
 
+        if (phone.equals("0")) {
+            FieldError error = new FieldError("organization", "phone", "Organization phone must not be zero.");
+            result.addError(error);
+        }
+
         if (result.hasErrors()) {
             return "organizations/addOrganization";
         }
@@ -103,12 +108,18 @@ public class OrganizationController {
             BindingResult result) {
 
         String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
         List<Organization> organizationLists = heroService.getAllOrganizations();
         for (Organization organizationList : organizationLists) {
-            if ((organizationList.getOrganizationId() != organization.getOrganizationId() ) && (name.toLowerCase().equals(organizationList.getName().toLowerCase()))) {
+            if ((organizationList.getOrganizationId() != organization.getOrganizationId()) && (name.toLowerCase().equals(organizationList.getName().toLowerCase()))) {
                 FieldError error = new FieldError("organization", "name", "Organization name must not be duplicate.");
                 result.addError(error);
             }
+        }
+
+        if (phone.equals("0")) {
+            FieldError error = new FieldError("organization", "phone", "Organization phone must not be zero.");
+            result.addError(error);
         }
 
         if (result.hasErrors()) {

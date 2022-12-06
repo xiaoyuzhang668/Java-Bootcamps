@@ -67,7 +67,7 @@ public class HeroController {
         String description = request.getParameter("description");
         Boolean existingE = false;
 
-        if (name == null || name.length() == 0 || name == "") {
+        if (name == null || name.trim().length() == 0) {
             model.addAttribute("heroNameMessage", "Hero name must not be empty.");
             existingE = true;
         }
@@ -83,15 +83,15 @@ public class HeroController {
                 model.addAttribute("heroNameMessage", "Hero name must not be duplicate.");
                 existingE = true;
             }
-        }       
+        }
 
-        if (description == null || description.length() == 0 || description == "") {
+        if (description == null || description.trim().length() == 0) {
             model.addAttribute("heroDescriptionMessage", "Hero description must not be empty.");
             existingE = true;
         }
-        
-         if (description.length() > 255 ) {
-            model.addAttribute("heroDescriptionMessage", "Hero description must be fewer than 255 characters.");
+
+        if (description.length() > 255) {
+            model.addAttribute("heroDescriptionMessage", "Hero description must be less than 255 characters.");
             existingE = true;
         }
 
@@ -112,8 +112,8 @@ public class HeroController {
 
         hero.setOrganizations(organizations);
 
-        if (file.getBytes().length > 125000) {
-            model.addAttribute("heroPhotoMessage", "Hero photo must be less than 125000bytes.");
+        if (file.getBytes().length > 15000) {
+            model.addAttribute("heroPhotoMessage", "Hero photo must be less than 15KB.");
             existingE = true;
         }
 
@@ -129,7 +129,7 @@ public class HeroController {
 
             model.addAttribute("powers", powers);
             model.addAttribute("organizations", allOrganizations);
-            model.addAttribute("hero", new Hero());
+
             return "heros/addHero";
         }
 
@@ -191,8 +191,13 @@ public class HeroController {
         String[] organizationIds = request.getParameterValues("organizationId");
         Boolean existingE = false;
 
-        if (name == null || name.length() == 0 || name == "") {
+        if (name == null || name.trim().length() == 0) {
             model.addAttribute("heroNameMessage", "Hero name must not be empty.");
+            existingE = true;
+        }
+
+        if (name.length() > 100) {
+            model.addAttribute("heroNameMessage", "Hero name must be less than 100 characters.");
             existingE = true;
         }
 
@@ -204,8 +209,13 @@ public class HeroController {
             }
         }
 
-        if (description == null || description.length() == 0 || description == "") {
+        if (description == null || description.trim().length() == 0 ) {
             model.addAttribute("heroDescriptionMessage", "Hero description must not be empty.");
+            existingE = true;
+        }
+
+        if (description.length() > 255) {
+            model.addAttribute("heroDescriptionMessage", "Hero description must be less than 255 characters.");
             existingE = true;
         }
 
@@ -225,8 +235,8 @@ public class HeroController {
 
         hero.setOrganizations(organizations);
 
-        if (file.getBytes().length > 125000) {
-            model.addAttribute("heroPhotoMessage", "Hero photo must not be bigger than 125000bytes.");
+        if (file.getBytes().length > 15000) {
+            model.addAttribute("heroPhotoMessage", "Hero photo must not be bigger than 15KB.");
             existingE = true;
         }
 
@@ -243,6 +253,7 @@ public class HeroController {
                 heroService.updateHeroNoImage(hero);
             }
         } else {
+
             List<Power> powers = heroService.getAllPowers();
             List<Organization> allOrganizations = heroService.getAllOrganizations();
 

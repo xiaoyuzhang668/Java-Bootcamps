@@ -29,7 +29,6 @@ public class Sighting {
     private String sightingDate;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Sighting() {
     }
@@ -84,11 +83,6 @@ public class Sighting {
             formatted = LocalDateTime.parse(this.getSightingDate(), formatter);
         }
         return formatted;
-    }
-
-    public LocalDateTime getFormatted2() {
-        LocalDateTime formatted2 = LocalDateTime.parse(this.getSightingDate(), formatter2);
-        return formatted2;
     }
 
     @Override

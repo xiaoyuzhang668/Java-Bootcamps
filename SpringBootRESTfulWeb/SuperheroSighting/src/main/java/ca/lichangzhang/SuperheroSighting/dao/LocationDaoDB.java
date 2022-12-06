@@ -30,6 +30,7 @@ public class LocationDaoDB implements LocationDao {
     final String UPDATE_LOCATION = "UPDATE location SET name = ?, description = ?, "
             + "address = ?, phone = ?, latitude = ?, longitude = ? WHERE locationId = ?";
     final String DELETE_LOCATION_FOR_ID = "DELETE FROM location WHERE locationId = ?";
+    final String DELETE_LOCATION_FOR_SIGHTING = "DELETE FROM sighting WHERE locationId = ?";
     final String GET_LOCATION_FOR_HERO = "SELECT DISTINCT L.* FROM location AS L "
             + "INNER JOIN sighting AS S ON L.locationId = S.locationId "
             + "WHERE S.heroId = ? ORDER BY L.name ";
@@ -89,6 +90,7 @@ public class LocationDaoDB implements LocationDao {
     public void deleteLocationById(int locationId) {
 
         jdbc.update(DELETE_LOCATION_FOR_ID, locationId);
+        jdbc.update(DELETE_LOCATION_FOR_SIGHTING, locationId);
     }
 
 //report all of the locations where a particular superhero has been seen.

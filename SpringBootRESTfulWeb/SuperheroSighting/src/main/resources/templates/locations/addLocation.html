@@ -76,7 +76,7 @@
                         <label for="latitudeLocation" class="col-3 col-form-label text-end">
                             Latitude <span class="text-danger">*</span></label>
                         <div class="col-9">
-                            <input type="text" name="latitude" id="latitudeLocation" class="form-control" th:value="${location.latitude}" placeholder="Latitude" onchange="return emptyFunc()"/>
+                            <input type="text" name="latitude" id="latitudeLocation" class="form-control" th:value="${location.latitude}" placeholder="Latitude">
                             <p th:each="error : ${#fields.errors('location.latitude')}" class="alert alert-danger"
                                 th:text="${error}"> Bad latitude </p>
                         </div>
@@ -85,7 +85,7 @@
                         <label for="longitudeLocation" class="col-3 col-form-label text-end">
                             Longitude <span class="text-danger">*</span></label>
                         <div class="col-9">
-                            <input type="text" name="longitude" id="longitudeLocation" class="form-control" th:value="${location.longitude}" placeholder="Longtitude"  />                        
+                            <input type="text" name="longitude" id="longitudeLocation" class="form-control" th:value="${location.longitude}" placeholder="Longtitude">                        
                              <p th:each="error : ${#fields.errors('location.longitude')}" class="alert alert-danger"
                                 th:text="${error}" id="errorLongitude"> Bad longitude </p>                            
                         </div>
@@ -102,23 +102,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
-    <script>
-        function emptyFunc() {
-           
-            var y= document.getElementById('longitudeLocation');
-            var x= document.getElementById('latitudeLocation');
-           
-  if (typeof x !== "undefined" && x.value == '') {
-// x.value() =0;
-    return false;
-  }
-             if (typeof y !== "undefined" && y.value == '') {
- return false;
-//   y.value=0;
-  }
-        }
-        
-    </script>
-</body>
+    </body>
 
 </html>

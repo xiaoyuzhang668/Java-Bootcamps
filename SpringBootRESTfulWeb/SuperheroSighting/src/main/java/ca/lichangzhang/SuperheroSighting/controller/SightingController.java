@@ -33,7 +33,6 @@ public class SightingController {
     @Autowired
     HeroService heroService;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @GetMapping("sightings")
@@ -209,7 +208,6 @@ public class SightingController {
         }
 
         model.addAttribute("sightings", sightings);
-
         return "sightings/searchSightingByHero";
     }
 
